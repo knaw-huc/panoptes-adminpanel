@@ -1,13 +1,19 @@
 import './index.scss'
-// import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
+// @ts-ignore this import is needed to make Bootstrap work
 import * as bootstrap from 'bootstrap'
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
+const queryClient = new QueryClient()
 
 // Set up a Router instance
 const router = createRouter({
     routeTree,
+    context: {
+        queryClient,
+    },
     defaultPreload: 'intent',
     defaultStaleTime: 5000,
     scrollRestoration: true,
@@ -24,5 +30,9 @@ const rootElement = document.getElementById('app')!
 
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
-    root.render(<RouterProvider router={router} />)
+    root.render(
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    )
 }
