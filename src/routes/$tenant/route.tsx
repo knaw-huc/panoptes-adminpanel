@@ -5,7 +5,7 @@ export const Route = createFileRoute('/$tenant')({
     component: RootComponent,
 })
 
-function RootComponent() {
+export function RootComponent() {
 
     const {tenant} = Route.useParams()
 
@@ -51,6 +51,8 @@ function RootComponent() {
                     </div>
                 </div>
                 <div className={"container p-4"}>
+                    {/*datasets laden*/}
+
                     <Outlet />
                 </div>
             </div>
