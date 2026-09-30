@@ -32,6 +32,8 @@ function RouteComponent() {
   return (
       <div>
       <h1 className={"h1"}>Home</h1>
+          <h2>datasets:</h2>
+
 
           <div className="list-group">
               {tenants.map((tenant) => (
@@ -45,9 +47,17 @@ function RouteComponent() {
                           <h5>{tenant.name}</h5>
                           <h5>ID: {tenant._id}</h5>
                       </div>
-                      <span className="btn btn-primary btn-sm">Enter </span>
+                      <span className="btn btn-primary btn-sm">view </span>
                   </Link>
               ))}
+          </div>
+
+          <h2>add new dataset:</h2>
+          <div>
+              <Link to="/new_dataset">
+                  <span className="btn btn-primary btn-sm">add new dataset </span>
+
+              </Link>
           </div>
   </div>)
 }
