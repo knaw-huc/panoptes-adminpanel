@@ -49,20 +49,6 @@ function RouteComponent() {
                   </Link>
               ))}
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </div>)
 }
 
