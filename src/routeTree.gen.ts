@@ -11,10 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TenantRouteRouteImport } from './routes/$tenant/route'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as New_datasetRouteImport } from './routes/new_dataset'
 import { Route as TenantIndexRouteImport } from './routes/$tenant/index'
-import { Route as TenantDatasetsRouteImport } from './routes/$tenant/datasets'
-import { Route as TenantFacetsRouteImport } from './routes/$tenant/facets'
+import { Route as TenantUsersRouteImport } from './routes/$tenant/users'
+import { Route as TenantDatasetsIndexRouteImport } from './routes/$tenant/datasets/index'
+import { Route as TenantDatasetsDatasetRouteRouteImport } from './routes/$tenant/datasets/$dataset/route'
+import { Route as TenantDatasetsDatasetIndexRouteImport } from './routes/$tenant/datasets/$dataset/index'
+import { Route as TenantDatasetsDatasetDetailPropertiesRouteImport } from './routes/$tenant/datasets/$dataset/detail-properties'
+import { Route as TenantDatasetsDatasetFacetsRouteImport } from './routes/$tenant/datasets/$dataset/facets'
+import { Route as TenantDatasetsDatasetResultPropertiesRouteImport } from './routes/$tenant/datasets/$dataset/result-properties'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const TenantRouteRoute = TenantRouteRouteImport.update({
   id: '/$tenant',
   path: '/$tenant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const New_datasetRoute = New_datasetRouteImport.update({
@@ -36,66 +47,135 @@ const TenantIndexRoute = TenantIndexRouteImport.update({
   path: '/',
   getParentRoute: () => TenantRouteRoute,
 } as any)
-const TenantDatasetsRoute = TenantDatasetsRouteImport.update({
-  id: '/datasets',
-  path: '/datasets',
+const TenantUsersRoute = TenantUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => TenantRouteRoute,
 } as any)
-const TenantFacetsRoute = TenantFacetsRouteImport.update({
-  id: '/facets',
-  path: '/facets',
+const TenantDatasetsIndexRoute = TenantDatasetsIndexRouteImport.update({
+  id: '/datasets/',
+  path: '/datasets/',
   getParentRoute: () => TenantRouteRoute,
 } as any)
+const TenantDatasetsDatasetRouteRoute =
+  TenantDatasetsDatasetRouteRouteImport.update({
+    id: '/datasets/$dataset',
+    path: '/datasets/$dataset',
+    getParentRoute: () => TenantRouteRoute,
+  } as any)
+const TenantDatasetsDatasetIndexRoute =
+  TenantDatasetsDatasetIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => TenantDatasetsDatasetRouteRoute,
+  } as any)
+const TenantDatasetsDatasetDetailPropertiesRoute =
+  TenantDatasetsDatasetDetailPropertiesRouteImport.update({
+    id: '/detail-properties',
+    path: '/detail-properties',
+    getParentRoute: () => TenantDatasetsDatasetRouteRoute,
+  } as any)
+const TenantDatasetsDatasetFacetsRoute =
+  TenantDatasetsDatasetFacetsRouteImport.update({
+    id: '/facets',
+    path: '/facets',
+    getParentRoute: () => TenantDatasetsDatasetRouteRoute,
+  } as any)
+const TenantDatasetsDatasetResultPropertiesRoute =
+  TenantDatasetsDatasetResultPropertiesRouteImport.update({
+    id: '/result-properties',
+    path: '/result-properties',
+    getParentRoute: () => TenantDatasetsDatasetRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$tenant': typeof TenantRouteRouteWithChildren
+  '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
-  '/$tenant/datasets': typeof TenantDatasetsRoute
-  '/$tenant/facets': typeof TenantFacetsRoute
+  '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
+  '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetRouteRouteWithChildren
+  '/$tenant/datasets/': typeof TenantDatasetsIndexRoute
+  '/$tenant/datasets/$dataset/detail-properties': typeof TenantDatasetsDatasetDetailPropertiesRoute
+  '/$tenant/datasets/$dataset/facets': typeof TenantDatasetsDatasetFacetsRoute
+  '/$tenant/datasets/$dataset/result-properties': typeof TenantDatasetsDatasetResultPropertiesRoute
+  '/$tenant/datasets/$dataset/': typeof TenantDatasetsDatasetIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
-  '/$tenant/datasets': typeof TenantDatasetsRoute
-  '/$tenant/facets': typeof TenantFacetsRoute
+  '/$tenant/users': typeof TenantUsersRoute
   '/$tenant': typeof TenantIndexRoute
+  '/$tenant/datasets': typeof TenantDatasetsIndexRoute
+  '/$tenant/datasets/$dataset/detail-properties': typeof TenantDatasetsDatasetDetailPropertiesRoute
+  '/$tenant/datasets/$dataset/facets': typeof TenantDatasetsDatasetFacetsRoute
+  '/$tenant/datasets/$dataset/result-properties': typeof TenantDatasetsDatasetResultPropertiesRoute
+  '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$tenant': typeof TenantRouteRouteWithChildren
+  '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
-  '/$tenant/datasets': typeof TenantDatasetsRoute
-  '/$tenant/facets': typeof TenantFacetsRoute
+  '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
+  '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetRouteRouteWithChildren
+  '/$tenant/datasets/': typeof TenantDatasetsIndexRoute
+  '/$tenant/datasets/$dataset/detail-properties': typeof TenantDatasetsDatasetDetailPropertiesRoute
+  '/$tenant/datasets/$dataset/facets': typeof TenantDatasetsDatasetFacetsRoute
+  '/$tenant/datasets/$dataset/result-properties': typeof TenantDatasetsDatasetResultPropertiesRoute
+  '/$tenant/datasets/$dataset/': typeof TenantDatasetsDatasetIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$tenant'
+    | '/login'
     | '/new_dataset'
-    | '/$tenant/datasets'
-    | '/$tenant/facets'
+    | '/$tenant/users'
     | '/$tenant/'
+    | '/$tenant/datasets/$dataset'
+    | '/$tenant/datasets/'
+    | '/$tenant/datasets/$dataset/detail-properties'
+    | '/$tenant/datasets/$dataset/facets'
+    | '/$tenant/datasets/$dataset/result-properties'
+    | '/$tenant/datasets/$dataset/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/new_dataset' | '/$tenant/datasets' | '/$tenant/facets' | '/$tenant'
+    | '/'
+    | '/login'
+    | '/new_dataset'
+    | '/$tenant/users'
+    | '/$tenant'
+    | '/$tenant/datasets'
+    | '/$tenant/datasets/$dataset/detail-properties'
+    | '/$tenant/datasets/$dataset/facets'
+    | '/$tenant/datasets/$dataset/result-properties'
+    | '/$tenant/datasets/$dataset'
   id:
     | '__root__'
     | '/'
     | '/$tenant'
+    | '/login'
     | '/new_dataset'
-    | '/$tenant/datasets'
-    | '/$tenant/facets'
+    | '/$tenant/users'
     | '/$tenant/'
+    | '/$tenant/datasets/$dataset'
+    | '/$tenant/datasets/'
+    | '/$tenant/datasets/$dataset/detail-properties'
+    | '/$tenant/datasets/$dataset/facets'
+    | '/$tenant/datasets/$dataset/result-properties'
+    | '/$tenant/datasets/$dataset/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TenantRouteRoute: typeof TenantRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
   New_datasetRoute: typeof New_datasetRoute
 }
 
@@ -115,6 +195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TenantRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/new_dataset': {
       id: '/new_dataset'
       path: '/new_dataset'
@@ -129,33 +216,92 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TenantIndexRouteImport
       parentRoute: typeof TenantRouteRoute
     }
-    '/$tenant/datasets': {
-      id: '/$tenant/datasets'
-      path: '/datasets'
-      fullPath: '/$tenant/datasets'
-      preLoaderRoute: typeof TenantDatasetsRouteImport
+    '/$tenant/users': {
+      id: '/$tenant/users'
+      path: '/users'
+      fullPath: '/$tenant/users'
+      preLoaderRoute: typeof TenantUsersRouteImport
       parentRoute: typeof TenantRouteRoute
     }
-    '/$tenant/facets': {
-      id: '/$tenant/facets'
-      path: '/facets'
-      fullPath: '/$tenant/facets'
-      preLoaderRoute: typeof TenantFacetsRouteImport
+    '/$tenant/datasets/': {
+      id: '/$tenant/datasets/'
+      path: '/datasets'
+      fullPath: '/$tenant/datasets/'
+      preLoaderRoute: typeof TenantDatasetsIndexRouteImport
       parentRoute: typeof TenantRouteRoute
+    }
+    '/$tenant/datasets/$dataset': {
+      id: '/$tenant/datasets/$dataset'
+      path: '/datasets/$dataset'
+      fullPath: '/$tenant/datasets/$dataset'
+      preLoaderRoute: typeof TenantDatasetsDatasetRouteRouteImport
+      parentRoute: typeof TenantRouteRoute
+    }
+    '/$tenant/datasets/$dataset/': {
+      id: '/$tenant/datasets/$dataset/'
+      path: '/'
+      fullPath: '/$tenant/datasets/$dataset/'
+      preLoaderRoute: typeof TenantDatasetsDatasetIndexRouteImport
+      parentRoute: typeof TenantDatasetsDatasetRouteRoute
+    }
+    '/$tenant/datasets/$dataset/detail-properties': {
+      id: '/$tenant/datasets/$dataset/detail-properties'
+      path: '/detail-properties'
+      fullPath: '/$tenant/datasets/$dataset/detail-properties'
+      preLoaderRoute: typeof TenantDatasetsDatasetDetailPropertiesRouteImport
+      parentRoute: typeof TenantDatasetsDatasetRouteRoute
+    }
+    '/$tenant/datasets/$dataset/facets': {
+      id: '/$tenant/datasets/$dataset/facets'
+      path: '/facets'
+      fullPath: '/$tenant/datasets/$dataset/facets'
+      preLoaderRoute: typeof TenantDatasetsDatasetFacetsRouteImport
+      parentRoute: typeof TenantDatasetsDatasetRouteRoute
+    }
+    '/$tenant/datasets/$dataset/result-properties': {
+      id: '/$tenant/datasets/$dataset/result-properties'
+      path: '/result-properties'
+      fullPath: '/$tenant/datasets/$dataset/result-properties'
+      preLoaderRoute: typeof TenantDatasetsDatasetResultPropertiesRouteImport
+      parentRoute: typeof TenantDatasetsDatasetRouteRoute
     }
   }
 }
 
+interface TenantDatasetsDatasetRouteRouteChildren {
+  TenantDatasetsDatasetDetailPropertiesRoute: typeof TenantDatasetsDatasetDetailPropertiesRoute
+  TenantDatasetsDatasetFacetsRoute: typeof TenantDatasetsDatasetFacetsRoute
+  TenantDatasetsDatasetResultPropertiesRoute: typeof TenantDatasetsDatasetResultPropertiesRoute
+  TenantDatasetsDatasetIndexRoute: typeof TenantDatasetsDatasetIndexRoute
+}
+
+const TenantDatasetsDatasetRouteRouteChildren: TenantDatasetsDatasetRouteRouteChildren =
+  {
+    TenantDatasetsDatasetDetailPropertiesRoute:
+      TenantDatasetsDatasetDetailPropertiesRoute,
+    TenantDatasetsDatasetFacetsRoute: TenantDatasetsDatasetFacetsRoute,
+    TenantDatasetsDatasetResultPropertiesRoute:
+      TenantDatasetsDatasetResultPropertiesRoute,
+    TenantDatasetsDatasetIndexRoute: TenantDatasetsDatasetIndexRoute,
+  }
+
+const TenantDatasetsDatasetRouteRouteWithChildren =
+  TenantDatasetsDatasetRouteRoute._addFileChildren(
+    TenantDatasetsDatasetRouteRouteChildren,
+  )
+
 interface TenantRouteRouteChildren {
-  TenantDatasetsRoute: typeof TenantDatasetsRoute
-  TenantFacetsRoute: typeof TenantFacetsRoute
+  TenantUsersRoute: typeof TenantUsersRoute
   TenantIndexRoute: typeof TenantIndexRoute
+  TenantDatasetsDatasetRouteRoute: typeof TenantDatasetsDatasetRouteRouteWithChildren
+  TenantDatasetsIndexRoute: typeof TenantDatasetsIndexRoute
 }
 
 const TenantRouteRouteChildren: TenantRouteRouteChildren = {
-  TenantDatasetsRoute: TenantDatasetsRoute,
-  TenantFacetsRoute: TenantFacetsRoute,
+  TenantUsersRoute: TenantUsersRoute,
   TenantIndexRoute: TenantIndexRoute,
+  TenantDatasetsDatasetRouteRoute: TenantDatasetsDatasetRouteRouteWithChildren,
+  TenantDatasetsIndexRoute: TenantDatasetsIndexRoute,
 }
 
 const TenantRouteRouteWithChildren = TenantRouteRoute._addFileChildren(
@@ -165,6 +311,7 @@ const TenantRouteRouteWithChildren = TenantRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TenantRouteRoute: TenantRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
   New_datasetRoute: New_datasetRoute,
 }
 export const routeTree = rootRouteImport

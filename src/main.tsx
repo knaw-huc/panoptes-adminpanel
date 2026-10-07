@@ -12,7 +12,8 @@ const queryClient = new QueryClient()
 const router = createRouter({
     routeTree,
     context: {
-        queryClient,
+        queryClient: queryClient,
+        tenant: undefined!
     },
     defaultPreload: 'intent',
     defaultStaleTime: 5000,
@@ -28,11 +29,15 @@ declare module '@tanstack/react-router' {
 
 const rootElement = document.getElementById('app')!
 
+function App() {
+    return <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+    </QueryClientProvider>
+}
+
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
     root.render(
-        <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-        </QueryClientProvider>
+        <App />
     )
 }

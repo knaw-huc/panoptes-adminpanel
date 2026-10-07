@@ -1,24 +1,12 @@
-import {createFileRoute, Link, useParams} from '@tanstack/react-router'
-import * as React from "react";
-
-
-
-interface Tenant {
-    _id: string
-    name: string
-}
-
-interface TenantsResponse {
-    tenants: Tenant[]
-}
-
+import {createFileRoute, Link} from '@tanstack/react-router'
+import {getBaseUrl} from "../config.ts";
+import type {TenantsResponse} from "../types/tenants.ts";
 
 export const Route = createFileRoute('/')({
     loader: async (): Promise<TenantsResponse> => {
-        const res = await fetch('http://admin.local:8000/api/admin/tenants')
+        const res = await fetch(`${getBaseUrl()}/api/admin/tenants`)
         return res.json()
     },
-
 
   component: RouteComponent,
 })
@@ -40,7 +28,7 @@ function RouteComponent() {
                   <Link
                       key={tenant._id}
                       to="/$tenant"
-                      params={{ tenant: tenant._id }}
+                      params={{ tenant: tenant.name }}
                       className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                   >
                       <div>
