@@ -1,6 +1,7 @@
 import {createFileRoute, Link,} from '@tanstack/react-router'
 import {getTenantUrl} from "../../../config.ts";
 import type {Tenant} from "../../../types/tenants.ts";
+import {fetchAuthenticated} from "../../../auth.ts";
 
 
 interface Dataconfiguration {
@@ -28,7 +29,7 @@ export const Route = createFileRoute('/$tenant/datasets/')({
     loader: async ({context}): Promise<LoaderData> => {
         const tenant = context.tenant
         console.log(context)
-        const res = await fetch(`${getTenantUrl(tenant)}/api/datasets`)
+        const res = await fetchAuthenticated(`${getTenantUrl(tenant)}/api/datasets`)
         return {datasets: await res.json() as Dataset[], tenant: tenant}
     },
     component: RouteComponent,

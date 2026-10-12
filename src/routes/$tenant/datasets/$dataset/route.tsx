@@ -12,7 +12,7 @@ function RouteComponent() {
 
     return <div>
         <h2>Dataset: {dataset}</h2>
-        <ul className={"nav nav-tabs"}>
+        <ul className={"nav nav-tabs mb-4"}>
             <li className="nav-item">
                 <Link className={"nav-link"} activeOptions={{exact: true}} to={"/$tenant/datasets/$dataset"} params={{tenant: tenant.name, dataset}}>Settings</Link>
             </li>

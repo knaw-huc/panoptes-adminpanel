@@ -13,7 +13,8 @@
     "@popperjs/core": "^2.11.8",
     "@tanstack/react-query": "^5.104.0",
     "@tanstack/react-router": "^1.170.40",
-    "bootstrap": "^5.3.8",
+    "bootstrap": "^6.0.0-alpha.1",
+    "bootstrap-icons": "^1.13.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sass": "^1.105.0"

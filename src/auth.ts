@@ -4,15 +4,15 @@ import {getBaseUrl} from "./config.ts";
 
 const routeApi = getRouteApi('/');
 
-export async function getToken() {
+export async function getToken(): Promise<string | null> {
     console.log("Get token")
 
-    let token;
+    let token: string | null = null;
 
     await navigator.locks.request("token", async () => {
         token = localStorage.getItem("token");
         if (!token) {
-            return token
+            return null
         }
         const body = JSON.parse(atob(token.split(".")[1]))
         const expDate = body.exp * 1000
@@ -28,7 +28,16 @@ export async function getToken() {
     return token
 }
 
-async function refreshToken() {
+export async function getUsername() {
+    const token = await getToken();
+    if (!token) {
+        return null
+    }
+    const body = JSON.parse(atob(token.split(".")[1]))
+    return body.sub
+}
+
+async function refreshToken(): Promise<string | null> {
     const refresh = localStorage.getItem("refresh");
 
     const response = await fetch(getBaseUrl() + "/api/auth/refresh", {

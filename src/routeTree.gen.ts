@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TenantRouteRouteImport } from './routes/$tenant/route'
+import { Route as CreateTenantRouteImport } from './routes/create-tenant'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as New_datasetRouteImport } from './routes/new_dataset'
 import { Route as TenantIndexRouteImport } from './routes/$tenant/index'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
 const TenantRouteRoute = TenantRouteRouteImport.update({
   id: '/$tenant',
   path: '/$tenant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateTenantRoute = CreateTenantRouteImport.update({
+  id: '/create-tenant',
+  path: '/create-tenant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -91,6 +97,7 @@ const TenantDatasetsDatasetResultPropertiesRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$tenant': typeof TenantRouteRouteWithChildren
+  '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
   '/$tenant/users': typeof TenantUsersRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
   '/$tenant/users': typeof TenantUsersRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$tenant': typeof TenantRouteRouteWithChildren
+  '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
   '/$tenant/users': typeof TenantUsersRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$tenant'
+    | '/create-tenant'
     | '/login'
     | '/new_dataset'
     | '/$tenant/users'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/create-tenant'
     | '/login'
     | '/new_dataset'
     | '/$tenant/users'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$tenant'
+    | '/create-tenant'
     | '/login'
     | '/new_dataset'
     | '/$tenant/users'
@@ -175,6 +187,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TenantRouteRoute: typeof TenantRouteRouteWithChildren
+  CreateTenantRoute: typeof CreateTenantRoute
   LoginRoute: typeof LoginRoute
   New_datasetRoute: typeof New_datasetRoute
 }
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/$tenant'
       fullPath: '/$tenant'
       preLoaderRoute: typeof TenantRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-tenant': {
+      id: '/create-tenant'
+      path: '/create-tenant'
+      fullPath: '/create-tenant'
+      preLoaderRoute: typeof CreateTenantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -311,6 +331,7 @@ const TenantRouteRouteWithChildren = TenantRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TenantRouteRoute: TenantRouteRouteWithChildren,
+  CreateTenantRoute: CreateTenantRoute,
   LoginRoute: LoginRoute,
   New_datasetRoute: New_datasetRoute,
 }
