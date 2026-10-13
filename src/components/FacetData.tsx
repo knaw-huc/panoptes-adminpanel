@@ -21,7 +21,7 @@ export function FacetData({facet}: FacetParams) {
         return <>
             <div className={"mb-3"}>
                 <label htmlFor={"treeSeparator"} className={"form-label"}>Separator</label>
-                <select name={"treeSeparator"} className={"form-select"} value={treeSeparator} onChange={(e) => setTreeSeparator(e.target.value)} aria-describedby={"treeSeparator-description"}>
+                <select name={"treeSeparator"} className={"form-control"} value={treeSeparator} onChange={(e) => setTreeSeparator(e.target.value)} aria-describedby={"treeSeparator-description"}>
                     <option>/</option>
                     <option>|</option>
                 </select>
@@ -32,7 +32,7 @@ export function FacetData({facet}: FacetParams) {
             <div className={"mb-3"}>
                 <label htmlFor={"treeExpandLevel"} className={"form-label"}>Expand level</label>
                 <input type={"number"} min={0} id={"treeExpandLevel"} name={"treeExpandLevel"} value={treeExpandLevel} className={"form-control"}
-                       onChange={e => setTreeExpandLevel(e.target.value)} aria-describedby="treeExpandLevel-description" />
+                       onChange={e => setTreeExpandLevel(Number(e.target.value))} aria-describedby="treeExpandLevel-description" />
                 <div className={"form-text"} id={"treeExpandLevel-description"}>
                     How many levels of the hierarchy to open on start.
                 </div>
@@ -67,7 +67,7 @@ export function FacetData({facet}: FacetParams) {
             <div className={"form-field mb-3"}>
                 <label htmlFor={"type"} className={"form-label"}>Type</label>
                 <select className={"form-control"} value={type} onChange={e => setType(e.target.value)}>
-                    {facettypes.map(facettype => <option value={facettype}>{facettype}</option>)}
+                    {facettypes.map(facetType => <option value={facetType}>{facetType}</option>)}
                 </select>
             </div>
 

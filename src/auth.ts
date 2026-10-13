@@ -65,6 +65,12 @@ async function refreshToken(): Promise<string | null> {
     return json.access_token
 }
 
+export function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+    goToLogin("You are logged out.")
+}
+
 function goToLogin(message: string) {
     console.log("Go to login page, message: ", message)
     localStorage.setItem("login_message", message)

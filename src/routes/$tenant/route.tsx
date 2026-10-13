@@ -3,7 +3,7 @@ import {Outlet, Link, createFileRoute} from '@tanstack/react-router'
 import {getBaseUrl} from "../../config.ts";
 import type {Tenant} from "../../types/tenants.ts";
 import {TenantContext} from "../../context/TenantContext.ts";
-import {fetchAuthenticated, getUsername} from "../../auth.ts";
+import {fetchAuthenticated, getUsername, logout} from "../../auth.ts";
 
 export const Route = createFileRoute('/$tenant')({
     beforeLoad: async ({params: {tenant}}) => {
@@ -67,7 +67,7 @@ export function RootComponent() {
                     {/*<div className={"dropdown"}>*/}
                         <a className={"btn-text"} data-bs-toggle={"menu"}>{username}</a>
                         <div className={"menu"}>
-                            <button className={"menu-item"}>Logout</button>
+                            <button type={"button"} onClick={logout} className={"menu-item"}>Logout</button>
                         </div>
                     {/*</div>*/}
                 </div>
