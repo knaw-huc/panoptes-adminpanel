@@ -4,6 +4,7 @@ import {FacetTypesContext} from "../../../../context/FacetTypesContext.ts";
 import type {Facet} from "../../../../types/facets.ts";
 import {FacetData} from "../../../../components/FacetData.tsx";
 import {fetchAuthenticated} from "../../../../auth.ts";
+import {Accordion} from "@mantine/core";
 
 interface LoaderData {
     facets: Facet[]
@@ -31,23 +32,29 @@ function RouteComponent() {
 
     return <div>
         <h3>Facets</h3>
-        <div className={"accordion"} id={"facet-accordion"}>
+        <Accordion variant={"separated"}>
             <FacetTypesContext value={facetTypes}>
                 {facets.map((facet, index) => (
-                    <details key={facet.property} name={"facet-accordion"} className={"accordion-item"} open={index == 0}>
-                        <summary className={"accordion-header"}>
-                            {facet.name}
-                            <svg className="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
-                                 fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="m2 5 6 6 6-6"/>
-                            </svg>
-                        </summary>
-                        <div className="accordion-body">
+                    // <details key={facet.property} name={"facet-accordion"} className={"accordion-item"} open={index == 0}>
+                    //     <summary className={"accordion-header"}>
+                    //         {facet.name}
+                    //         <svg className="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                    //              fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    //             <path d="m2 5 6 6 6-6"/>
+                    //         </svg>
+                    //     </summary>
+                    //     <div className="accordion-body">
+                    //         <FacetData facet={facet} />
+                    //     </div>
+                    // </details>
+                    <Accordion.Item value={facet.property} key={index}>
+                        <Accordion.Control>{facet.name}</Accordion.Control>
+                        <Accordion.Panel>
                             <FacetData facet={facet} />
-                        </div>
-                    </details>
+                        </Accordion.Panel>
+                    </Accordion.Item>
                 ))}
             </FacetTypesContext>
-        </div>
+        </Accordion>
     </div>
 }
