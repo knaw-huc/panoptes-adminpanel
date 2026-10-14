@@ -14,6 +14,7 @@ import { Route as TenantRouteRouteImport } from './routes/$tenant/route'
 import { Route as CreateTenantRouteImport } from './routes/create-tenant'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as New_datasetRouteImport } from './routes/new_dataset'
+import { Route as New_dataset_tanstack_formRouteImport } from './routes/new_dataset_tanstack_form'
 import { Route as TenantIndexRouteImport } from './routes/$tenant/index'
 import { Route as TenantUsersRouteImport } from './routes/$tenant/users'
 import { Route as TenantDatasetsIndexRouteImport } from './routes/$tenant/datasets/index'
@@ -48,6 +49,12 @@ const New_datasetRoute = New_datasetRouteImport.update({
   path: '/new_dataset',
   getParentRoute: () => rootRouteImport,
 } as any)
+const New_dataset_tanstack_formRoute =
+  New_dataset_tanstack_formRouteImport.update({
+    id: '/new_dataset_tanstack_form',
+    path: '/new_dataset_tanstack_form',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TenantIndexRoute = TenantIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
+  '/new_dataset_tanstack_form': typeof New_dataset_tanstack_formRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
   '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetRouteRouteWithChildren
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
+  '/new_dataset_tanstack_form': typeof New_dataset_tanstack_formRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant': typeof TenantIndexRoute
   '/$tenant/datasets': typeof TenantDatasetsIndexRoute
@@ -129,6 +138,7 @@ export interface FileRoutesById {
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
+  '/new_dataset_tanstack_form': typeof New_dataset_tanstack_formRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
   '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetRouteRouteWithChildren
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/create-tenant'
     | '/login'
     | '/new_dataset'
+    | '/new_dataset_tanstack_form'
     | '/$tenant/users'
     | '/$tenant/'
     | '/$tenant/datasets/$dataset'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/create-tenant'
     | '/login'
     | '/new_dataset'
+    | '/new_dataset_tanstack_form'
     | '/$tenant/users'
     | '/$tenant'
     | '/$tenant/datasets'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
     | '/create-tenant'
     | '/login'
     | '/new_dataset'
+    | '/new_dataset_tanstack_form'
     | '/$tenant/users'
     | '/$tenant/'
     | '/$tenant/datasets/$dataset'
@@ -190,6 +203,7 @@ export interface RootRouteChildren {
   CreateTenantRoute: typeof CreateTenantRoute
   LoginRoute: typeof LoginRoute
   New_datasetRoute: typeof New_datasetRoute
+  New_dataset_tanstack_formRoute: typeof New_dataset_tanstack_formRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -227,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/new_dataset'
       fullPath: '/new_dataset'
       preLoaderRoute: typeof New_datasetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new_dataset_tanstack_form': {
+      id: '/new_dataset_tanstack_form'
+      path: '/new_dataset_tanstack_form'
+      fullPath: '/new_dataset_tanstack_form'
+      preLoaderRoute: typeof New_dataset_tanstack_formRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$tenant/': {
@@ -334,6 +355,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreateTenantRoute: CreateTenantRoute,
   LoginRoute: LoginRoute,
   New_datasetRoute: New_datasetRoute,
+  New_dataset_tanstack_formRoute: New_dataset_tanstack_formRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
