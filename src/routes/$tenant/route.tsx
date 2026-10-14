@@ -5,7 +5,7 @@ import type {Tenant} from "../../types/tenants.ts";
 import {TenantContext} from "../../context/TenantContext.ts";
 import {fetchAuthenticated, getUsername, logout} from "../../auth.ts";
 import classes from "./route.module.css";
-import {AppShell, Button, Code, Group, Menu, ScrollArea, Text} from "@mantine/core";
+import {AppShell, Box, Button, Code, Container, Group, Menu, ScrollArea, Text} from "@mantine/core";
 import type {Dataset} from "../../types/datasets.ts";
 import {IconChartDots3, IconSettings, IconSettingsPlus, IconUsers} from "@tabler/icons-react";
 import {LinksGroup} from "../../components/NavbarLinksGroup.tsx";
@@ -43,10 +43,10 @@ export const Route = createFileRoute('/$tenant')({
             username: username
         }
     },
-    component: RootComponent,
+    component: RouteComponent,
 })
 
-export function RootComponent() {
+function RouteComponent() {
 
     const {tenants, tenant, username, datasets} = Route.useLoaderData()
 
@@ -70,47 +70,6 @@ export function RootComponent() {
     const links = navigationData.map((item) => <LinksGroup {...item} key={item.label} />)
 
     return (
-        // <React.Fragment>
-        //     <div id={"page-container"} className={"d-flex flex-nowrap"}>
-        //         <div className={"navigation-bar d-flex bg-body fg-body flex-column flex-shrink-0 p-3"} data-bs-theme={"dark"} style={{width: "280px"}}>
-        //             <span className={"fs-2xl"}>Panoptes Admin</span>
-        //             <hr />
-        //             {/*<div className={"dropdown"}>*/}
-        //                 <a className={"btn-solid theme-primary"} data-bs-toggle={"menu"}>{tenant.name}</a>
-        //                 <div className={"menu"}>
-        //                     <span className={"menu-text"}>Pick tenant</span>
-        //                     {tenants.map(t => <Link to={"/$tenant"} params={{tenant: t.name}} className={"menu-item"}>{t.name}</Link>
-        //                     )}
-        //                     <hr className={"menu-divider"} />
-        //                     <Link to={"/create-tenant"} type={"button"} className={"menu-item theme-primary"}>Create tenant</Link>
-        //                 </div>
-        //             {/*</div>*/}
-        //             <hr />
-        //             <nav className={"nav flex-column mb-auto"}>
-        //                 <Link
-        //                     className={"nav-link text-white justify-content-start"}
-        //                     to={"/$tenant"}
-        //                     params={{tenant: tenant.name}}
-        //                     activeOptions={{exact: true}}
-        //                 >General</Link>
-        //                 <Link className={"nav-link text-white justify-content-start "} to={"/$tenant/datasets"} params={{tenant: tenant.name}}>Datasets</Link>
-        //                 <Link className={"nav-link text-white justify-content-start"} to={"/$tenant/users"} params={{tenant: tenant.name}}>Users</Link>
-        //             </nav>
-        //             <hr />
-        //             {/*<div className={"dropdown"}>*/}
-        //                 <a className={"btn-text"} data-bs-toggle={"menu"}>{username}</a>
-        //                 <div className={"menu"}>
-        //                     <button type={"button"} onClick={logout} className={"menu-item"}>Logout</button>
-        //                 </div>
-        //             {/*</div>*/}
-        //         </div>
-        //         <div id={"page-content"} className={"container p-4"}>
-        //             <TenantContext value={tenant}>
-        //                 <Outlet />
-        //             </TenantContext>
-        //         </div>
-        //     </div>
-        // </React.Fragment>
         <AppShell padding={"md"} navbar={{width: 300, breakpoint: 'sm'}}>
             <AppShell.Navbar>
             <nav className={classes.navbar}>
@@ -142,7 +101,11 @@ export function RootComponent() {
             </AppShell.Navbar>
             <AppShell.Main>
                 <TenantContext value={tenant}>
-                    <Outlet />
+                    <Container strategy={"grid"} size={1000}>
+                        <Box>
+                            <Outlet />
+                        </Box>
+                    </Container>
                 </TenantContext>
             </AppShell.Main>
         </AppShell>

@@ -5,6 +5,11 @@ import type {Facet} from "../../../../types/facets.ts";
 import {FacetData} from "../../../../components/FacetData.tsx";
 import {fetchAuthenticated} from "../../../../auth.ts";
 import {Accordion} from "@mantine/core";
+import {DragDropProvider} from "@dnd-kit/react";
+import {useRef, useState} from "react";
+import {useSortable} from "@dnd-kit/react/sortable";
+import {move} from "@dnd-kit/helpers";
+import classes from './facets.module.css'
 
 interface LoaderData {
     facets: Facet[]
@@ -27,34 +32,38 @@ export const Route = createFileRoute('/$tenant/datasets/$dataset/facets')({
     component: RouteComponent,
 })
 
+function SortableFacet({facet, index}: {facet: Facet, index: number}) {
+    const [element, setElement] = useState<Element | null>(null)
+    const handleRef = useRef<HTMLButtonElement | null>(null)
+    const {isDragging} = useSortable({id: facet.name, index, element, handle: handleRef})
+
+    return (
+        <Accordion.Item ref={setElement} data-shadow={isDragging || undefined} value={facet.property} key={index}>
+            <Accordion.Control icon={<div className={classes.handle} ref={handleRef} />}>{facet.name}</Accordion.Control>
+            <Accordion.Panel>
+                <FacetData facet={facet} />
+            </Accordion.Panel>
+        </Accordion.Item>
+    )
+}
+
 function RouteComponent() {
     const {facets, facetTypes} = Route.useLoaderData()
+
+    const [facetList, setFacetsList] = useState<Facet[]>(facets)
 
     return <div>
         <h3>Facets</h3>
         <Accordion variant={"separated"}>
-            <FacetTypesContext value={facetTypes}>
-                {facets.map((facet, index) => (
-                    // <details key={facet.property} name={"facet-accordion"} className={"accordion-item"} open={index == 0}>
-                    //     <summary className={"accordion-header"}>
-                    //         {facet.name}
-                    //         <svg className="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
-                    //              fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                    //             <path d="m2 5 6 6 6-6"/>
-                    //         </svg>
-                    //     </summary>
-                    //     <div className="accordion-body">
-                    //         <FacetData facet={facet} />
-                    //     </div>
-                    // </details>
-                    <Accordion.Item value={facet.property} key={index}>
-                        <Accordion.Control>{facet.name}</Accordion.Control>
-                        <Accordion.Panel>
-                            <FacetData facet={facet} />
-                        </Accordion.Panel>
-                    </Accordion.Item>
-                ))}
-            </FacetTypesContext>
+            <DragDropProvider onDragEnd={(event) => {
+                setFacetsList((items) => move(items, event))
+            }}>
+                <FacetTypesContext value={facetTypes}>
+                    {facets.map((facet, index) => (
+                        <SortableFacet key={index} index={index} facet={facet} />
+                    ))}
+                </FacetTypesContext>
+            </DragDropProvider>
         </Accordion>
     </div>
 }
