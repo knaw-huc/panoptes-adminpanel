@@ -32,9 +32,11 @@ function RouteComponent() {
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
+        // (name is value of input) , (value: actual typed in value)
         const { name, value } = e.target
         setFormData((prev) =>
             ({ ...prev,
+                // [], so that the variable is evaluated
                 [name]: value }))
     }
 

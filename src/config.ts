@@ -1,7 +1,7 @@
 import type {Tenant} from "./types/tenants.ts";
 
 export const PROTOCOL = "http"
-export const BASE_DOMAIN = "admin.panoptes.local"
+export const BASE_DOMAIN = "admin.local"
 
 export const PORT = 8000
 
