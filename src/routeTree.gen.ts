@@ -13,8 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TenantRouteRouteImport } from './routes/$tenant/route'
 import { Route as CreateTenantRouteImport } from './routes/create-tenant'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as New_datasetRouteImport } from './routes/new_dataset'
-import { Route as New_dataset_tanstack_formRouteImport } from './routes/new_dataset_tanstack_form'
 import { Route as New_dataset_tanstack_mantineRouteImport } from './routes/new_dataset_tanstack_mantine'
 import { Route as TenantIndexRouteImport } from './routes/$tenant/index'
 import { Route as TenantUsersRouteImport } from './routes/$tenant/users'
@@ -45,17 +43,6 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const New_datasetRoute = New_datasetRouteImport.update({
-  id: '/new_dataset',
-  path: '/new_dataset',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const New_dataset_tanstack_formRoute =
-  New_dataset_tanstack_formRouteImport.update({
-    id: '/new_dataset_tanstack_form',
-    path: '/new_dataset_tanstack_form',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const New_dataset_tanstack_mantineRoute =
   New_dataset_tanstack_mantineRouteImport.update({
     id: '/new_dataset_tanstack_mantine',
@@ -113,8 +100,6 @@ export interface FileRoutesByFullPath {
   '/$tenant': typeof TenantRouteRouteWithChildren
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
-  '/new_dataset': typeof New_datasetRoute
-  '/new_dataset_tanstack_form': typeof New_dataset_tanstack_formRoute
   '/new_dataset_tanstack_mantine': typeof New_dataset_tanstack_mantineRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
@@ -129,8 +114,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
-  '/new_dataset': typeof New_datasetRoute
-  '/new_dataset_tanstack_form': typeof New_dataset_tanstack_formRoute
   '/new_dataset_tanstack_mantine': typeof New_dataset_tanstack_mantineRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant': typeof TenantIndexRoute
@@ -146,8 +129,6 @@ export interface FileRoutesById {
   '/$tenant': typeof TenantRouteRouteWithChildren
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
-  '/new_dataset': typeof New_datasetRoute
-  '/new_dataset_tanstack_form': typeof New_dataset_tanstack_formRoute
   '/new_dataset_tanstack_mantine': typeof New_dataset_tanstack_mantineRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
@@ -165,8 +146,6 @@ export interface FileRouteTypes {
     | '/$tenant'
     | '/create-tenant'
     | '/login'
-    | '/new_dataset'
-    | '/new_dataset_tanstack_form'
     | '/new_dataset_tanstack_mantine'
     | '/$tenant/users'
     | '/$tenant/'
@@ -181,8 +160,6 @@ export interface FileRouteTypes {
     | '/'
     | '/create-tenant'
     | '/login'
-    | '/new_dataset'
-    | '/new_dataset_tanstack_form'
     | '/new_dataset_tanstack_mantine'
     | '/$tenant/users'
     | '/$tenant'
@@ -197,8 +174,6 @@ export interface FileRouteTypes {
     | '/$tenant'
     | '/create-tenant'
     | '/login'
-    | '/new_dataset'
-    | '/new_dataset_tanstack_form'
     | '/new_dataset_tanstack_mantine'
     | '/$tenant/users'
     | '/$tenant/'
@@ -215,8 +190,6 @@ export interface RootRouteChildren {
   TenantRouteRoute: typeof TenantRouteRouteWithChildren
   CreateTenantRoute: typeof CreateTenantRoute
   LoginRoute: typeof LoginRoute
-  New_datasetRoute: typeof New_datasetRoute
-  New_dataset_tanstack_formRoute: typeof New_dataset_tanstack_formRoute
   New_dataset_tanstack_mantineRoute: typeof New_dataset_tanstack_mantineRoute
 }
 
@@ -248,20 +221,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/new_dataset': {
-      id: '/new_dataset'
-      path: '/new_dataset'
-      fullPath: '/new_dataset'
-      preLoaderRoute: typeof New_datasetRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/new_dataset_tanstack_form': {
-      id: '/new_dataset_tanstack_form'
-      path: '/new_dataset_tanstack_form'
-      fullPath: '/new_dataset_tanstack_form'
-      preLoaderRoute: typeof New_dataset_tanstack_formRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/new_dataset_tanstack_mantine': {
@@ -375,8 +334,6 @@ const rootRouteChildren: RootRouteChildren = {
   TenantRouteRoute: TenantRouteRouteWithChildren,
   CreateTenantRoute: CreateTenantRoute,
   LoginRoute: LoginRoute,
-  New_datasetRoute: New_datasetRoute,
-  New_dataset_tanstack_formRoute: New_dataset_tanstack_formRoute,
   New_dataset_tanstack_mantineRoute: New_dataset_tanstack_mantineRoute,
 }
 export const routeTree = rootRouteImport

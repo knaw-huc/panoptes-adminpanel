@@ -1,15 +1,13 @@
-
-
 import {createFileRoute, Link} from '@tanstack/react-router'
 // import * as React from 'react'
 import { useForm } from '@tanstack/react-form'
-import {Button, Container, Group, Paper, Stack, TextInput} from "@mantine/core";
-
+import {Button, Container, Group, Paper, Select, Stack, TextInput} from "@mantine/core";
 
 
 interface DatasetFormValues {
     name: string
     data_type: string
+    es_index: string
     data_configuration: {
         id_property: string
         base_url: string
@@ -28,6 +26,7 @@ function RouteComponent() {
 
             name:'',
             data_type:'',
+            es_index:'',
             data_configuration:{
                 id_property:'',
                 base_url:'',
@@ -37,14 +36,12 @@ function RouteComponent() {
         onSubmit: async ({value}) => {
             console.log(value)
         }
-
     })
-
 
 
     return (
         <Container size={600} my="lg">
-            <Paper bd="1px solid var(--mantine-color-gray-4)" p="md" radius="xl">
+            <Paper bd="1px solid var(--mantine-color-gray-5)" p="md" radius="xl">
             <form>
 
                 <Stack gap="sm">
@@ -65,34 +62,61 @@ function RouteComponent() {
                     <form.Field
                         name="data_type"
                         children={(field) => (
-                            <TextInput
+                            <>
+                            <Select
                                 label="data type"
+                                required
+                                placeholder="select a data type"
+                                data={['elasticsearch','cmdi']}
                                 value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
+                                onChange={(value) => field.handleChange(value ?? '')}
                             />
+
+                            {/*show data configuration only when 'cmdi' is selected*/}
+                            {field.state.value === 'cmdi' && (
+                                <Stack gap="sm" mt="sm">
+                                    <Paper bd="1px solid var(--mantine-color-gray-2)" p="md" radius="md">
+                                    <form.Field
+                                        name="data_configuration.id_property"
+                                        children={(sub) => (
+                                          <TextInput
+                                              label="id property (cmdi)"
+                                              required
+                                              value={sub.state.value}
+                                              onChange={(e) => sub.handleChange(e.target.value)}
+                                          />
+                                        )}
+                                    />
+
+                                    <form.Field
+                                        name="data_configuration.base_url"
+                                        children={(sub) => (
+                                            <TextInput
+                                                label="base url (cmdi)"
+                                                required
+                                                value={sub.state.value}
+                                                onChange={(e) => sub.handleChange(e.target.value)}
+                                            />
+                                        )}
+                                    />
+                                    </Paper>
+                                </Stack>
+                            )}
+                            </>
                         )}
                     />
 
-                    {/*data configuration*/}
-
+                    {/*es_index*/}
                     <form.Field
-                        name="data_configuration.id_property"
+                        name="es_index"
                         children={(field) => (
-                            <TextInput
-                                label="ID property"
+                            <Select
+                                label="elasticsearch index"
+                                required
+                                placeholder="select an elasticsearch index"
+                                data={['xxx', 'yyy', 'zzz']}
                                 value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
-                            />
-                        )}
-                    />
-
-                    <form.Field
-                        name="data_configuration.base_url"
-                        children={(field) => (
-                            <TextInput
-                                label="base URL"
-                                value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
+                                onChange={(value) => field.handleChange(value ?? '')}
                             />
                         )}
                     />
@@ -146,7 +170,6 @@ function RouteComponent() {
                                         </Button>
                                     </Group>
                                 ))}
-
                             </Stack>
                         )}
                     />
@@ -156,14 +179,12 @@ function RouteComponent() {
                     </Button>
 
                 </Stack>
-
             </form>
             </Paper>
 
             <Button component={Link} to="/" variant="subtle" size="xs">
                 return home
             </Button>
-
 
         </Container>
     )
