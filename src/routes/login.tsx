@@ -1,6 +1,9 @@
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {useState} from "react";
 import {getBaseUrl} from "../config.ts";
+import {Button, Container, Paper, PasswordInput, Text, TextInput, Title} from "@mantine/core";
+
+import classes from './login.module.css'
 
 export const Route = createFileRoute('/login')({
     component: RouteComponent,
@@ -11,6 +14,7 @@ function RouteComponent() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [remember, setRemember] = useState(false)
+    const [error, setError] = useState('')
     const message = localStorage.getItem("login_message")
     const navigate = useNavigate();
 
@@ -29,7 +33,7 @@ function RouteComponent() {
         const json = await response.json()
 
         if (response.status === 401) {
-            // document.getElementById("response").setHTML(json.detail)
+            setError("Invalid username or password")
             return false;
         }
 
@@ -47,7 +51,6 @@ function RouteComponent() {
         localStorage.removeItem("login_message")
         if (redirect) {
             localStorage.removeItem("login_redirect")
-            // window.location.replace(redirect)
             navigate({
                 to: redirect
             })
@@ -57,30 +60,22 @@ function RouteComponent() {
             to: "/"
         })
     }
+    return <Container size={420} my={40}>
+        <Title ta={"center"} className={classes.title}>
+            Panoptes Admin
+        </Title>
+        <Text className={classes.subtitle}>
+            {message}
+        </Text>
 
-    return <div className={"container"}>
-        <div className={"row justify-content-around vh-100"}>
-            <div className={"col-12 md:col-6 lg:col-5 xl:col-4 align-self-center"}>
-                <div className={"card"}>
-                    <div className={"card-body"}>
-                        <h4 className={"card-title"}>Panoptes Admin</h4>
-                        <p className={"card-subtitle"}>{message}</p>
-                        <form onSubmit={handleSubmit}>
-                            <div className={"form-group mb-3"}>
-                                <label htmlFor="username">Username</label>
-                                <input type="text" id="username" className={"form-control"} value={username} onChange={(e) => setUsername(e.target.value)} />
-                            </div>
-                            <div className={"form-group mb-3"}>
-                                <label htmlFor="password">Password</label>
-                                <input type="password" id="password" className={"form-control"} value={password} onChange={(e) => setPassword(e.target.value)} />
-                            </div>
-                            <div className={"d-grid gap-2"}>
-                                <button type="submit" className={"btn-solid theme-primary"}>Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <Paper withBorder shadow={"sm"} p={22} mt={30} radius={"md"}>
+            <form onSubmit={handleSubmit}>
+                <TextInput value={username} onChange={e => setUsername(e.target.value)} label={"Username"} placeholder={"jan_janssen"} required radius={"md"} />
+                <PasswordInput value={password} onChange={e => setPassword(e.target.value)} label={"Password"} placeholder={"Your Password"} required mt={"md"} radius={"md"} />
+
+                <Text>{error}</Text>
+                <Button type={"submit"} fullWidth mt={"xl"} radius={"md"}>Sign in</Button>
+            </form>
+        </Paper>
+    </Container>
 }

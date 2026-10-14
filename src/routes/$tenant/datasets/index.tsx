@@ -2,23 +2,9 @@ import {createFileRoute, Link,} from '@tanstack/react-router'
 import {getTenantUrl} from "../../../config.ts";
 import type {Tenant} from "../../../types/tenants.ts";
 import {fetchAuthenticated} from "../../../auth.ts";
+import type {Dataset} from "../../../types/datasets.ts";
 
 
-interface Dataconfiguration {
-    id_property: string
-    base_url: string
-}
-
-interface Metadata {
-    [key: string]: unknown
-}
-
-interface Dataset {
-    name: string
-    data_type: string
-    data_configuration: Dataconfiguration
-    metadata: Metadata[]
-}
 
 interface LoaderData {
     datasets: Dataset[]
