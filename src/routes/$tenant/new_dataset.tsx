@@ -52,7 +52,33 @@ function RouteComponent() {
             metadata: [{key: '', value: ''}],
         },
         onSubmit: async ({value}) => {
-            console.log(value)
+
+            console.log('sending payload to backend..', JSON.stringify(value, null, 2))
+
+            try {
+                console.log('logging the value', value)
+
+                const response = await fetch('http://bypass.local:8000/api/datasets',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(value)
+                })
+
+                if (!response.ok) {
+                    throw new Error('failed to save dataset')
+                }
+
+                const result = await response.json()
+                console.log('Success', result)
+
+            }
+
+            catch (error) {
+                console.log('error:', error)
+
+            }
         }
     })
 
@@ -60,7 +86,13 @@ function RouteComponent() {
     return (
         <Container size={600} my="lg">
             <Paper bd="1px solid var(--mantine-color-gray-5)" p="md" radius="xl">
-                <form>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        form.handleSubmit()
+                    }}
+                >
 
                     <Stack gap="sm">
                         {/*name*/}
