@@ -101,7 +101,6 @@ function RouteComponent() {
                                                     children={(sub) => (
                                                         <TextInput
                                                             label="id property"
-                                                            required
                                                             value={sub.state.value}
                                                             onChange={(e) => sub.handleChange(e.target.value)}
                                                         />
@@ -113,7 +112,6 @@ function RouteComponent() {
                                                     children={(sub) => (
                                                         <TextInput
                                                             label="base url"
-                                                            required
                                                             value={sub.state.value}
                                                             onChange={(e) => sub.handleChange(e.target.value)}
                                                         />
@@ -238,7 +236,6 @@ function RouteComponent() {
                             children={(field) => (
                                 <Select
                                     label="elasticsearch index"
-                                    required
                                     placeholder="select an elasticsearch index"
                                     data={['xxx', 'yyy', 'zzz']}
                                     value={field.state.value}

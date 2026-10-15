@@ -64,7 +64,8 @@ function RouteComponent() {
                 params: {tenant: tenant.name, dataset: dataset.name}
             }))
         },
-        {label: "Users", link: "/$tenant/users", params: {tenant: tenant.name}, icon: IconUsers}
+        {label: "Users", link: "/$tenant/users", params: {tenant: tenant.name}, icon: IconUsers},
+        {label: "Add new dataset", link: "/$tenant/new_dataset", params: {tenant: tenant.name}, icon: IconSettingsPlus},
     ]
 
     const links = navigationData.map((item) => <LinksGroup {...item} key={item.label} />)

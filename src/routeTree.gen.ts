@@ -15,6 +15,7 @@ import { Route as CreateTenantRouteImport } from './routes/create-tenant'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as New_datasetRouteImport } from './routes/new_dataset'
 import { Route as TenantIndexRouteImport } from './routes/$tenant/index'
+import { Route as TenantNew_datasetRouteImport } from './routes/$tenant/new_dataset'
 import { Route as TenantUsersRouteImport } from './routes/$tenant/users'
 import { Route as TenantDatasetsIndexRouteImport } from './routes/$tenant/datasets/index'
 import { Route as TenantDatasetsDatasetRouteRouteImport } from './routes/$tenant/datasets/$dataset/route'
@@ -51,6 +52,11 @@ const New_datasetRoute = New_datasetRouteImport.update({
 const TenantIndexRoute = TenantIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => TenantRouteRoute,
+} as any)
+const TenantNew_datasetRoute = TenantNew_datasetRouteImport.update({
+  id: '/new_dataset',
+  path: '/new_dataset',
   getParentRoute: () => TenantRouteRoute,
 } as any)
 const TenantUsersRoute = TenantUsersRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
+  '/$tenant/new_dataset': typeof TenantNew_datasetRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
   '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetRouteRouteWithChildren
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
+  '/$tenant/new_dataset': typeof TenantNew_datasetRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant': typeof TenantIndexRoute
   '/$tenant/datasets': typeof TenantDatasetsIndexRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/create-tenant': typeof CreateTenantRoute
   '/login': typeof LoginRoute
   '/new_dataset': typeof New_datasetRoute
+  '/$tenant/new_dataset': typeof TenantNew_datasetRoute
   '/$tenant/users': typeof TenantUsersRoute
   '/$tenant/': typeof TenantIndexRoute
   '/$tenant/datasets/$dataset': typeof TenantDatasetsDatasetRouteRouteWithChildren
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/create-tenant'
     | '/login'
     | '/new_dataset'
+    | '/$tenant/new_dataset'
     | '/$tenant/users'
     | '/$tenant/'
     | '/$tenant/datasets/$dataset'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/create-tenant'
     | '/login'
     | '/new_dataset'
+    | '/$tenant/new_dataset'
     | '/$tenant/users'
     | '/$tenant'
     | '/$tenant/datasets'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/create-tenant'
     | '/login'
     | '/new_dataset'
+    | '/$tenant/new_dataset'
     | '/$tenant/users'
     | '/$tenant/'
     | '/$tenant/datasets/$dataset'
@@ -234,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/$tenant/'
       preLoaderRoute: typeof TenantIndexRouteImport
+      parentRoute: typeof TenantRouteRoute
+    }
+    '/$tenant/new_dataset': {
+      id: '/$tenant/new_dataset'
+      path: '/new_dataset'
+      fullPath: '/$tenant/new_dataset'
+      preLoaderRoute: typeof TenantNew_datasetRouteImport
       parentRoute: typeof TenantRouteRoute
     }
     '/$tenant/users': {
@@ -311,6 +330,7 @@ const TenantDatasetsDatasetRouteRouteWithChildren =
   )
 
 interface TenantRouteRouteChildren {
+  TenantNew_datasetRoute: typeof TenantNew_datasetRoute
   TenantUsersRoute: typeof TenantUsersRoute
   TenantIndexRoute: typeof TenantIndexRoute
   TenantDatasetsDatasetRouteRoute: typeof TenantDatasetsDatasetRouteRouteWithChildren
@@ -318,6 +338,7 @@ interface TenantRouteRouteChildren {
 }
 
 const TenantRouteRouteChildren: TenantRouteRouteChildren = {
+  TenantNew_datasetRoute: TenantNew_datasetRoute,
   TenantUsersRoute: TenantUsersRoute,
   TenantIndexRoute: TenantIndexRoute,
   TenantDatasetsDatasetRouteRoute: TenantDatasetsDatasetRouteRouteWithChildren,
