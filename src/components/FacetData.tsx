@@ -1,46 +1,69 @@
 import type {Facet} from "../types/facets.ts";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {FacetTypesContext} from "../context/FacetTypesContext.ts";
-import {NumberInput, Select, Switch, TextInput} from "@mantine/core";
+import {useAppForm} from "../hooks/appForm.ts";
 
 interface FacetParams {
     facet: Facet
+    index: number
+    onChange: (facet: Facet, index: number) => void
 }
 
-export function FacetData({facet}: FacetParams) {
-    const [editing, setEditing] = useState<boolean>(false)
-    const [name, setName] = useState<string>(facet.name);
-    const [property, setProperty] = useState<string>(facet.property)
-    const [startOpen, setStartOpen] = useState<boolean>(facet.start_open)
-    const [type, setType] = useState<string>(facet.type)
-    const [treeSeparator, setTreeSeparator] = useState<string>(facet.tree_separator as string)
-    const [treeExpandLevel, setTreeExpandLevel] = useState<number>(facet.tree_expand_level as number)
+export function FacetData({facet, index, onChange}: FacetParams) {
+    const facetTypes = useContext(FacetTypesContext);
 
-    const facettypes = useContext(FacetTypesContext);
+    const form = useAppForm({
+        defaultValues: facet,
+        onSubmit: async ({value}) => {
+            console.log(value)
+        },
+        listeners: {
+            onChange: (({formApi}) => {
+                const info = {}
+                Object.entries(formApi.fieldInfo).map(([key, value]) => {
+                    // @ts-expect-error instance is defined as possibly null but that's incorrect
+                    info[key] = value.instance.getValue()
+                })
+                onChange(info as Facet, index)
+            })
+        }
+    })
 
-    function renderTreeFields() {
-        return <>
-            <Select mt={"md"} label={"Separator"} description={"A tree facet is a hierarchical facet indexed in ES using the \"path_hierarchy\" tokenizer. When using Procrustus for indexing, these are split by either '/' or '|'."} value={treeSeparator} onChange={setTreeSeparator} data={["/", "|"]} />
-
-            <NumberInput min={0} mt={"md"} label={"Expand level"} description={"How many levels of the hierarchy to open on start."} value={treeExpandLevel} onChange={setTreeExpandLevel} />
+    return (
+        <>
+            <form.AppField
+                name={"name"}
+                children={(field) => <field.TextField first={true} label={"Name"} />}
+            />
+            <form.AppField
+                name={"property"}
+                children={(field) => <field.TextField label={"Property"} />}
+            />
+            <form.AppField
+                name={"start_open"}
+                children={(field) => <field.SwitchField label={"Start open"} />}
+            />
+            <form.AppField
+                name={"type"}
+                children={(field) => <field.SelectField label={"Type"} data={facetTypes} />}
+            />
+            <form.Subscribe
+                selector={(state) => state.values.type}
+                children={(type) => {
+                    if (type == "tree") {
+                        return <>
+                            <form.AppField
+                                name={"tree_separator"}
+                                children={(field) => <field.SelectField label={"Separator"} description={"A tree facet is a hierarchical facet indexed in ES using the \"path_hierarchy\" tokenizer. When using Procrustus for indexing, these are split by either '/' or '|'."} data={["/", "|"]} />}
+                            />
+                            <form.AppField
+                                name={"tree_expand_level"}
+                                children={(field) => <field.NumberField label={"Expand level"} min={0} description={"How many levels of the hierarchy to open on start."} />}
+                            />
+                        </>
+                    }
+                }}
+            />
         </>
-    }
-
-    function renderForm() {
-        return <>
-            <TextInput label={"Name"} value={name} onChange={(e) => setName(e.target.value)} />
-
-            <TextInput mt={"md"} label={"Property"} value={property} onChange={(e) => setProperty(e.target.value)} />
-
-            <Switch mt={"md"} checked={startOpen} onChange={(e) => setStartOpen(e.target.checked)} label={"Start open"} />
-
-            <Select value={type} onChange={setType} label={"Type"} placeholder={"Pick value"} data={facettypes} mt={"md"} />
-
-            {type == "tree" ? renderTreeFields() : null}
-        </>
-    }
-
-    return <>
-        {renderForm()}
-    </>
+    )
 }
