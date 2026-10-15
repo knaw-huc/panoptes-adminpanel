@@ -15,7 +15,7 @@ interface DatasetFormValues {
     metadata: Array<{ key: string; value: string }>
 }
 
-export const Route = createFileRoute('/new_dataset_tanstack_mantine')({
+export const Route = createFileRoute('/new_dataset')({
     component: RouteComponent,
 })
 

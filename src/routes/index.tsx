@@ -42,7 +42,7 @@ function RouteComponent() {
 
             <h2>add new dataset:</h2>
             <div>
-                <Link to="/new_dataset_tanstack_mantine">
+                <Link to="/new_dataset">
                     <span className="btn btn-primary btn-sm">add new dataset </span>
 
                 </Link>
