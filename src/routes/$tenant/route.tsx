@@ -50,6 +50,18 @@ function RouteComponent() {
 
     const {tenants, tenant, username, datasets} = Route.useLoaderData()
 
+    const tenantLinks = datasets.map(dataset => ({
+        label: dataset.name,
+        link: "/$tenant/datasets/$dataset",
+        params: {tenant: tenant.name, dataset: dataset.name}
+    }))
+
+    tenantLinks.push({
+        label: "+ Create new",
+        link: "/new_dataset",
+        params: {tenant: tenant.name},
+    })
+
     const navigationData = [
         {label: "General", link: "/$tenant", params: {tenant: tenant.name}, icon: IconSettings},
         {
@@ -58,11 +70,7 @@ function RouteComponent() {
             initiallyOpened: true,
             link: "/$tenant/datasets",
             params: {tenant: tenant.name},
-            links: datasets.map(dataset => ({
-                label: dataset.name,
-                link: "/$tenant/datasets/$dataset",
-                params: {tenant: tenant.name, dataset: dataset.name}
-            }))
+            links: tenantLinks
         },
         {label: "Users", link: "/$tenant/users", params: {tenant: tenant.name}, icon: IconUsers},
         {label: "Add new dataset", link: "/$tenant/new_dataset", params: {tenant: tenant.name}, icon: IconSettingsPlus},
