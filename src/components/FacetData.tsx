@@ -1,6 +1,6 @@
 import type {Facet} from "../types/facets.ts";
 import {useContext} from "react";
-import {FacetTypesContext} from "../context/FacetTypesContext.ts";
+import {FacetMetadataContext} from "../context/FacetMetadataContext.ts";
 import {useAppForm} from "../hooks/appForm.ts";
 
 interface FacetParams {
@@ -10,7 +10,7 @@ interface FacetParams {
 }
 
 export function FacetData({facet, index, onChange}: FacetParams) {
-    const facetTypes = useContext(FacetTypesContext);
+    const metadata = useContext(FacetMetadataContext);
 
     const form = useAppForm({
         defaultValues: facet,
@@ -37,7 +37,7 @@ export function FacetData({facet, index, onChange}: FacetParams) {
             />
             <form.AppField
                 name={"property"}
-                children={(field) => <field.TextField label={"Property"} />}
+                children={(field) => <field.AutocompleteField data={metadata.fieldNames} label={"Property"} />}
             />
             <form.AppField
                 name={"start_open"}
@@ -45,7 +45,7 @@ export function FacetData({facet, index, onChange}: FacetParams) {
             />
             <form.AppField
                 name={"type"}
-                children={(field) => <field.SelectField label={"Type"} data={facetTypes} />}
+                children={(field) => <field.SelectField label={"Type"} data={metadata.types} />}
             />
             <form.Subscribe
                 selector={(state) => state.values.type}

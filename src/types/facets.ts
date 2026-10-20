@@ -6,6 +6,9 @@ export interface Facet {
     start_open: boolean
     tree_expand_level?: number
     tree_separator?: string
+
+    new?: boolean
+    deleted?: boolean
 }
 
 export interface TreeFacet extends Facet {

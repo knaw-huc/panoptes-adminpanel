@@ -1,12 +1,12 @@
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css'
 import './index.scss'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-// @ts-ignore this import is needed to make Bootstrap work
-// import * as bootstrap from 'bootstrap'
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {MantineProvider} from "@mantine/core";
+import {Notifications} from "@mantine/notifications";
 
 const queryClient = new QueryClient()
 
@@ -34,6 +34,7 @@ const rootElement = document.getElementById('app')!
 function App() {
     return <QueryClientProvider client={queryClient}>
         <MantineProvider>
+            <Notifications />
             <RouterProvider router={router} />
         </MantineProvider>
     </QueryClientProvider>

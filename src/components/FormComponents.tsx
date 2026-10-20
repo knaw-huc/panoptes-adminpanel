@@ -1,5 +1,5 @@
 import {useFieldContext} from "../context/FormContexts.ts";
-import {NumberInput, Select, Switch, TextInput} from "@mantine/core";
+import {Autocomplete, NumberInput, Select, Switch, TextInput} from "@mantine/core";
 
 interface fieldArgs {
     label: string,
@@ -43,11 +43,20 @@ export function SelectField({label, description, data, first}: selectFieldArgs) 
     )
 }
 
+export function AutocompleteField({label, description, data, first}: selectFieldArgs) {
+    const field = useFieldContext<string>()
+    const isFirst = first === true
+
+    return (
+        <Autocomplete mt={isFirst ? undefined : "md"} description={description} onChange={(value) => field.handleChange(value as string)} data={data} label={label} value={field.state.value} />
+    )
+}
+
 export function SwitchField({label, description, first}: fieldArgs) {
     const field = useFieldContext<boolean>()
     const isFirst = first === true
 
     return (
-        <Switch mt={isFirst ? undefined : "md"} label={label} checked={field.state.value} onChange={(e) => field.handleChange(e.target.checked)} />
+        <Switch mt={isFirst ? undefined : "md"} label={label} description={description} checked={field.state.value} onChange={(e) => field.handleChange(e.target.checked)} />
     )
 }
