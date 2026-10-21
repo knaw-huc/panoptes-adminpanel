@@ -97,7 +97,22 @@ function RouteComponent() {
                 form.setFieldValue('name', data.name)
                 form.setFieldValue('data_type', data.data_type)
                 form.setFieldValue('data_configuration', data.data_configuration)
-                // form.setFieldValue('metadata', data.metadata)
+
+                let normalizedMetadata = data.metadata
+
+                if (Array.isArray(data.metadata)) {
+                    normalizedMetadata = data.metadata
+                }
+                else if (data.metadata && typeof data.metadata === 'object' && !Array.isArray(data.metadata)){
+                    const entries = Object.entries(data.metadata)
+                    if (entries.length > 0) {
+                        normalizedMetadata = entries.map(([key, value]) => ({
+                            key,
+                            value: String(value ?? '')
+                        }))
+                    }
+                }
+                form.setFieldValue('metadata', normalizedMetadata)
 
             } catch (error) {
                 console.error('Error loading dataset:', error)
@@ -306,7 +321,11 @@ function RouteComponent() {
                         <form.Field
                             name="metadata"
                             mode="array"
-                            children={(field) => (
+                            children={(field) => {
+
+                                const metadataValues = Array.isArray(field.state.value) ? field.state.value : [];
+
+                                return(
                                 <Stack gap="xs">
                                     <Group>
                                         <span>metadata</span>
@@ -317,7 +336,7 @@ function RouteComponent() {
                                         </Button>
                                     </Group>
 
-                                    {field.state.value.map((_, index) => (
+                                    {metadataValues.map((_, index) => (
                                         <Group key={index} grow>
 
                                             <form.Field
@@ -352,7 +371,8 @@ function RouteComponent() {
                                         </Group>
                                     ))}
                                 </Stack>
-                            )}
+                                );
+                            }}
                         />
 
                         <Button type="submit" mt="md">
