@@ -4,7 +4,7 @@ import {useForm} from '@tanstack/react-form'
 import {Button, Container, Group, Paper, Select, Stack, Switch, TextInput} from "@mantine/core";
 
 
-interface DatasetFormValues {
+export interface DatasetFormValues {
     name: string
     data_type: string
     es_index: string
@@ -88,7 +88,7 @@ function RouteComponent() {
             <Paper bd="1px solid var(--mantine-color-gray-5)" p="md" radius="xl">
                 <form
                     onSubmit={(e) => {
-                        e.preventDefault()
+                        // e.preventDefault()
                         e.stopPropagation()
                         form.handleSubmit()
                     }}
