@@ -1,18 +1,18 @@
 import {createFileRoute, useBlocker, useRouter} from '@tanstack/react-router'
 import {getBaseUrl, getTenantUrl} from "../../../../config.ts";
 import type {Facet} from "../../../../types/facets.ts";
-import {FacetData} from "../../../../components/FacetData.tsx";
+import {FacetData} from "../../../../components/facets/FacetData.tsx";
 import {fetchAuthenticated} from "../../../../auth.ts";
-import {Accordion, Badge, Button, Group, Modal} from "@mantine/core";
+import {Accordion, Button, Group, Modal} from "@mantine/core";
 import {DragDropProvider} from "@dnd-kit/react";
-import {useContext, useRef, useState} from "react";
-import {useSortable} from "@dnd-kit/react/sortable";
+import {useContext, useState} from "react";
 import {move} from "@dnd-kit/helpers";
-import classes from './facets.module.css'
 import {TenantContext} from "../../../../context/TenantContext.ts";
 import {notifications} from "@mantine/notifications";
 import {useDisclosure} from "@mantine/hooks";
 import {FacetMetadataContext} from "../../../../context/FacetMetadataContext.ts";
+import {v4 as uuidv4} from "uuid";
+import {SortableFacet} from "../../../../components/facets/SortableFacet.tsx";
 
 interface LoaderData {
     facets: Facet[]
@@ -38,42 +38,6 @@ export const Route = createFileRoute('/$tenant/datasets/$dataset/facets')({
     component: RouteComponent,
 })
 
-interface SortableFacetProperties {
-    facet: Facet
-    index: number
-    onFacetChange: (facet: Facet, index: number) => void
-}
-
-function SortableFacet({facet, index, onFacetChange}: SortableFacetProperties) {
-    const [element, setElement] = useState<Element | null>(null)
-    const handleRef = useRef<HTMLButtonElement | null>(null)
-    const {isDragging} = useSortable({id: facet.name, index, element, handle: handleRef})
-    const [hasChanges, setHasChanges] = useState<boolean>(false)
-
-    function onChange(facet: Facet, index: number) {
-        setHasChanges(true)
-        onFacetChange(facet, index)
-    }
-
-    function getBadges() {
-        if (facet.new) {
-            return <Badge color={"green"}>New</Badge>
-        }
-
-        if (hasChanges) {
-            return <Badge color={"yellow"}>Has changes</Badge>
-        }
-    }
-
-    return (
-        <Accordion.Item ref={setElement} data-shadow={isDragging || undefined} value={facet._id}>
-            <Accordion.Control icon={<div className={classes.handle} ref={handleRef} />}><Group>{facet.name}{getBadges()}</Group></Accordion.Control>
-            <Accordion.Panel>
-                <FacetData onChange={onChange} index={index} facet={facet} />
-            </Accordion.Panel>
-        </Accordion.Item>
-    )
-}
 
 function RouteComponent() {
     const {facets, facetTypes, fieldNames} = Route.useLoaderData()
@@ -117,7 +81,9 @@ function RouteComponent() {
     }
 
     async function save() {
-        const newFacets = facetList.map((f: Facet, i: number) => {
+        const newFacets = facetList
+            .filter((f: Facet) => f.deleted !== true)
+            .map((f: Facet, i: number) => {
             return {...f, order: i, dataset_name: dataset, id: undefined}
         })
 
@@ -157,10 +123,11 @@ function RouteComponent() {
     }
 
     function addNewFacet() {
-        const facet = {...newFacet, new: true}
+        const facet = {...newFacet, new: true, _id: uuidv4()}
         setFacetsList([...facetList, facet])
         close()
         setNewFacet(null)
+        setHasChanges(true)
     }
 
     return <div key={counter}>
@@ -183,7 +150,7 @@ function RouteComponent() {
                 <Button variant={"default"} onClick={open}>Add facet</Button>
             </Group>
             <Modal opened={modalOpened} onClose={close} title={"Add facet"}>
-                <FacetData index={0} facet={newFacet} onChange={setNewFacet} />
+                <FacetData showDelete={false} index={0} facet={newFacet} onChange={setNewFacet} />
                 <Button fullWidth mt={"md"} onClick={addNewFacet}>Add facet</Button>
             </Modal>
         </FacetMetadataContext>

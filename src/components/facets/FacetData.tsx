@@ -1,15 +1,17 @@
-import type {Facet} from "../types/facets.ts";
+import type {Facet} from "../../types/facets.ts";
 import {useContext} from "react";
-import {FacetMetadataContext} from "../context/FacetMetadataContext.ts";
-import {useAppForm} from "../hooks/appForm.ts";
+import {FacetMetadataContext} from "../../context/FacetMetadataContext.ts";
+import {useAppForm} from "../../hooks/appForm.ts";
+import {Button} from "@mantine/core";
 
 interface FacetParams {
     facet: Facet
     index: number
     onChange: (facet: Facet, index: number) => void
+    showDelete?: boolean
 }
 
-export function FacetData({facet, index, onChange}: FacetParams) {
+export function FacetData({facet, index, onChange, showDelete = true}: FacetParams) {
     const metadata = useContext(FacetMetadataContext);
 
     const form = useAppForm({
@@ -28,6 +30,17 @@ export function FacetData({facet, index, onChange}: FacetParams) {
             })
         }
     })
+
+    function deleteFacet() {
+        if (!showDelete) return
+        const info: object = {}
+        Object.entries(form.fieldInfo).map(([key, value]) => {
+            // @ts-expect-error instance is defined as possibly null but that's incorrect
+            info[key] = value.instance.getValue()
+        })
+        info["deleted"] = true
+        onChange(info as Facet, index)
+    }
 
     return (
         <>
@@ -64,6 +77,7 @@ export function FacetData({facet, index, onChange}: FacetParams) {
                     }
                 }}
             />
+            {showDelete && <Button variant={"outline"} color={"red"} onClick={deleteFacet} type={"button"} mt={"md"}>Delete</Button>}
         </>
     )
 }

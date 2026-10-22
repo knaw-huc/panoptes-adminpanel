@@ -1,5 +1,6 @@
 
 export interface Facet {
+    _id: string;
     property: string
     name: string
     type: string
