@@ -5,8 +5,6 @@ import {getBaseUrl} from "./config.ts";
 const routeApi = getRouteApi('/');
 
 export async function getToken(): Promise<string | null> {
-    console.log("Get token")
-
     let token: string | null = null;
 
     await navigator.locks.request("token", async () => {
@@ -51,8 +49,6 @@ async function refreshToken(): Promise<string | null> {
         })
     })
 
-    console.log(response)
-
     if (response.status !== 200) {
         goToLogin("Your session has expired.")
         return null;
@@ -72,7 +68,6 @@ export function logout() {
 }
 
 function goToLogin(message: string) {
-    console.log("Go to login page, message: ", message)
     localStorage.setItem("login_message", message)
     localStorage.setItem("login_redirect", window.location.pathname)
 

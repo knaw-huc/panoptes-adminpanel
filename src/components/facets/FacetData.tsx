@@ -5,17 +5,17 @@ import {useAppForm} from "../../hooks/appForm.ts";
 import {Button} from "@mantine/core";
 
 interface FacetParams {
-    facet: Facet
+    item: Facet
     index: number
     onChange: (facet: Facet, index: number) => void
     showDelete?: boolean
 }
 
-export function FacetData({facet, index, onChange, showDelete = true}: FacetParams) {
+export function FacetData({item, index, onChange, showDelete = true}: FacetParams) {
     const metadata = useContext(FacetMetadataContext);
 
     const form = useAppForm({
-        defaultValues: facet,
+        defaultValues: item,
         onSubmit: async ({value}) => {
             console.log(value)
         },
@@ -77,7 +77,6 @@ export function FacetData({facet, index, onChange, showDelete = true}: FacetPara
                     }
                 }}
             />
-            {showDelete && <Button variant={"outline"} color={"red"} onClick={deleteFacet} type={"button"} mt={"md"}>Delete</Button>}
         </>
     )
 }
