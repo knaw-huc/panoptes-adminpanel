@@ -97,6 +97,7 @@ function RouteComponent() {
                 form.setFieldValue('name', data.name)
                 form.setFieldValue('data_type', data.data_type)
                 form.setFieldValue('data_configuration', data.data_configuration)
+                form.setFieldValue('es_index', data.es_index)
 
                 let normalizedMetadata = data.metadata
 
