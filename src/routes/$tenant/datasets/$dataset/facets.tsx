@@ -8,7 +8,7 @@ import {useContext, useState} from "react";
 import {TenantContext} from "../../../../context/TenantContext.ts";
 import {notifications} from "@mantine/notifications";
 import {FacetMetadataContext} from "../../../../context/FacetMetadataContext.ts";
-import {SortableList} from "../../../../components/facets/sortableList/SortableList.tsx";
+import {SortableList} from "../../../../components/sortableList/SortableList.tsx";
 
 interface LoaderData {
     facets: Facet[]
@@ -41,9 +41,9 @@ function RouteComponent() {
     const tenant = useContext(TenantContext)
 
     const [facetList, setFacetsList] = useState<Facet[]>(facets)
-    const [hasChanges, setHasChanges] = useState<boolean>(false)
     const [counter, setCounter] = useState(0)
     const [saveLoading, setSaveLoading] = useState(false)
+    const [hasChanges, setHasChanges] = useState<boolean>(false)
 
     useBlocker({
         shouldBlockFn: () => {
@@ -76,7 +76,7 @@ function RouteComponent() {
             await router.invalidate({sync: true})
             setHasChanges(false)
 
-            // Hack needed because invalidate doesn't rerender, it only changes the state values...
+            // Needed because invalidate doesn't rerender, it only changes the state values...
             setCounter(counter + 1)
             setFacetsList(newFacets)
             notifications.show({
@@ -105,7 +105,7 @@ function RouteComponent() {
         <FacetMetadataContext value={{types: facetTypes, fieldNames: fieldNames}}>
             <SortableList key={counter + "_" + facets.length} addLabel={"Add facet"} formComponent={FacetData} items={facetList} onChange={(items) => {
                 setHasChanges(true)
-                setFacetsList(items)
+                setFacetsList(items as Facet[])
             }} />
         </FacetMetadataContext>
     </div>

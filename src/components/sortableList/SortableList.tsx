@@ -43,6 +43,7 @@ export function SortableList({addLabel, formComponent, items, onChange}: Sortabl
     return <>
         <Accordion variant={"separated"}>
             <DragDropProvider onDragEnd={(event) => {
+                // @ts-expect-error typing issue
                 const changed = move(items, event)
                 onChange(changed as unknown as SortableItem[])
             }}>

@@ -2,16 +2,14 @@ import type {Facet} from "../../types/facets.ts";
 import {useContext} from "react";
 import {FacetMetadataContext} from "../../context/FacetMetadataContext.ts";
 import {useAppForm} from "../../hooks/appForm.ts";
-import {Button} from "@mantine/core";
 
 interface FacetParams {
     item: Facet
     index: number
-    onChange: (facet: Facet, index: number) => void
-    showDelete?: boolean
+    onChange: (item: Facet, index: number) => void
 }
 
-export function FacetData({item, index, onChange, showDelete = true}: FacetParams) {
+export function FacetData({item, index, onChange}: FacetParams) {
     const metadata = useContext(FacetMetadataContext);
 
     const form = useAppForm({
@@ -30,17 +28,6 @@ export function FacetData({item, index, onChange, showDelete = true}: FacetParam
             })
         }
     })
-
-    function deleteFacet() {
-        if (!showDelete) return
-        const info: object = {}
-        Object.entries(form.fieldInfo).map(([key, value]) => {
-            // @ts-expect-error instance is defined as possibly null but that's incorrect
-            info[key] = value.instance.getValue()
-        })
-        info["deleted"] = true
-        onChange(info as Facet, index)
-    }
 
     return (
         <>

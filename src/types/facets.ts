@@ -1,4 +1,4 @@
-import type {SortableItem} from "../components/facets/sortableList/SortableList.tsx";
+import type {SortableItem} from "../components/sortableList/SortableList.tsx";
 
 export interface Facet extends SortableItem {
     _id: string;
