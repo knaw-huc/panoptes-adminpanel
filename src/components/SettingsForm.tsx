@@ -1,66 +1,26 @@
-import {createFileRoute, Link} from '@tanstack/react-router'
-// import * as React from 'react'
-import {useForm} from '@tanstack/react-form'
+// import {createFileRoute, Link, useParams} from '@tanstack/react-router'
+// import {useForm} from "@tanstack/react-form";
+// import {JSX, useEffect} from "react";
 import {Button, Container, Group, Paper, Select, Stack, Switch, TextInput} from "@mantine/core";
+import type { ReactFormApi } from "@tanstack/react-form";
 
+type SettingsFormProps = {
+    form: ReactFormApi<any, any>;
+};
 
-interface DatasetFormValues {
-    name: string
-    data_type: string
-    es_index: string
-    s3: boolean
-    authentication_option: boolean
-    data_configuration: {
-        id_property: string
-        base_url: string
-        s3_endpoint: string
-        s3_key_id: string
-        s3_secret: string
-    }
-    authentication: {
-        username: string
-        password: string
-    }
-    metadata: Array<{ key: string; value: string }>
-}
-
-export const Route = createFileRoute('/new_dataset')({
-    component: RouteComponent,
-})
-
-function RouteComponent() {
-
-    const form = useForm<DatasetFormValues>({
-        defaultValues: {
-
-            name: '',
-            data_type: '',
-            es_index: '',
-            s3: false,
-            authentication_option: false,
-            data_configuration: {
-                id_property: '',
-                base_url: '',
-                s3_endpoint: '',
-                s3_key_id: '',
-                s3_secret: '',
-            },
-            authentication: {
-                username: '',
-                password: '',
-            },
-            metadata: [{key: '', value: ''}],
-        },
-        onSubmit: async ({value}) => {
-            console.log(value)
-        }
-    })
-
-
+export function SettingsForm(
+    {form}: SettingsFormProps) {
     return (
+
         <Container size={600} my="lg">
             <Paper bd="1px solid var(--mantine-color-gray-5)" p="md" radius="xl">
-                <form>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        form.handleSubmit()
+                    }}
+                >
 
                     <Stack gap="sm">
                         {/*name*/}
@@ -69,6 +29,30 @@ function RouteComponent() {
                             children={(field) => (
                                 <TextInput
                                     label="name"
+                                    required
+                                    value={field.state.value}
+                                    onChange={(e) => field.handleChange(e.target.value)}
+                                />
+                            )}
+                        />
+
+                        <form.Field
+                            name="tenant_name"
+                            children={(field) => (
+                                <TextInput
+                                    label="tenant_name"
+                                    // required
+                                    value={field.state.value}
+                                    onChange={(e) => field.handleChange(e.target.value)}
+                                />
+                            )}
+                        />
+
+                        <form.Field
+                            name="detail_id"
+                            children={(field) => (
+                                <TextInput
+                                    label="detail_id"
                                     required
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(e.target.value)}
@@ -175,27 +159,24 @@ function RouteComponent() {
 
 
                                                 />
-                                            </Paper>
 
-                                            {/*authentication option also only when cmdi is selected, but seperate from data configuration*/}
-                                            <Paper bd="1px solid var(--mantine-color-gray-2)" p="md" radius="md">
                                                 <form.Field
                                                     name="authentication_option"
                                                     children={(field) => (
-                                                        <Stack gap="xl">
+                                                        <Stack gap="sm" mt="md">
                                                             <Switch
-                                                                label="authentication option (cmdi only) "
+                                                                label="auth"
                                                                 checked={field.state.value}
                                                                 onChange={(e) => field.handleChange(e.currentTarget.checked)}
                                                             />
 
                                                             {field.state.value && (
-                                                                <Stack gap="sm">
+                                                                <Stack gap="sm" mt="md">
                                                                     <form.Field
-                                                                        name="authentication.username"
+                                                                        name="data_configuration.auth.username"
                                                                         children={(sub) => (
                                                                             <TextInput
-                                                                                label="username"
+                                                                                label="auth username"
                                                                                 value={sub.state.value}
                                                                                 onChange={(e) => sub.handleChange(e.target.value)}
 
@@ -204,10 +185,10 @@ function RouteComponent() {
                                                                     />
 
                                                                     <form.Field
-                                                                        name="authentication.password"
+                                                                        name="data_configuration.auth.password"
                                                                         children={(sub) => (
                                                                             <TextInput
-                                                                                label="password"
+                                                                                label="auth password"
                                                                                 value={sub.state.value}
                                                                                 onChange={(e) => sub.handleChange(e.target.value)}
 
@@ -219,10 +200,13 @@ function RouteComponent() {
                                                                 </Stack>
                                                             )}
                                                         </Stack>
-                                                    )}
-                                                />
-                                            </Paper>
 
+                                                    )}
+
+
+                                                />
+
+                                            </Paper>
 
                                         </Stack>
                                     )}
@@ -231,70 +215,130 @@ function RouteComponent() {
                         />
 
                         {/*es_index*/}
+                        {/*<form.Field*/}
+                        {/*    name="es_index"*/}
+                        {/*    children={(field) => (*/}
+                        {/*        <Select*/}
+                        {/*            label="elasticsearch index"*/}
+                        {/*            required*/}
+                        {/*            placeholder="select an elasticsearch index"*/}
+                        {/*            data={['xxx', 'yyy', 'zzz']}*/}
+                        {/*            value={field.state.value}*/}
+                        {/*            onChange={(value) => field.handleChange(value ?? '')}*/}
+                        {/*        />*/}
+                        {/*    )}*/}
+                        {/*/>*/}
+
                         <form.Field
                             name="es_index"
                             children={(field) => (
-                                <Select
-                                    label="elasticsearch index"
-                                    placeholder="select an elasticsearch index"
-                                    data={['xxx', 'yyy', 'zzz']}
+                                <TextInput
+                                    label="es_index"
+                                    required
                                     value={field.state.value}
-                                    onChange={(value) => field.handleChange(value ?? '')}
+                                    onChange={(e) => field.handleChange(e.target.value)}
                                 />
                             )}
                         />
 
+
                         {/*metadata array*/}
                         <form.Field
                             name="metadata"
-                            mode="array"
-                            children={(field) => (
-                                <Stack gap="xs">
-                                    <Group>
-                                        <span>metadata</span>
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => field.pushValue({key: '', value: ''})}>
-                                            add row
-                                        </Button>
-                                    </Group>
+                            // mode="array"
+                            children={(field) => {
 
-                                    {field.state.value.map((_, index) => (
-                                        <Group key={index} grow>
+                                // const metadataValues = Array.isArray(field.state.value) ? field.state.value : [];
+                                const entries = Object.entries(field.state.value);
 
-                                            <form.Field
-                                                name={`metadata[${index}].key`}
-                                                children={(sub) => (
-                                                    <TextInput
-                                                        value={sub.state.value}
-                                                        placeholder="Key"
-                                                        onChange={(e) => sub.handleChange(e.target.value)}
-                                                    />
-                                                )}
-                                            />
-
-                                            <form.Field
-                                                name={`metadata[${index}].value`}
-                                                children={(sub) => (
-                                                    <TextInput
-                                                        value={sub.state.value}
-                                                        placeholder="Value"
-                                                        onChange={(e) => sub.handleChange(e.target.value)}
-                                                    />
-                                                )}
-                                            />
-
+                                return (
+                                    <Stack gap="xs">
+                                        <Group>
+                                            <span>metadata</span>
                                             <Button
-                                                color="red"
                                                 variant="outline"
-                                                onClick={() => field.removeValue(index)}
+                                                // onClick={() => field.pushValue({key: '', value: ''})}>
+                                                onClick={() => {
+                                                    const current = field.state.value;
+                                                    const newKey = `key_${Object.keys(current).length + 1}`;
+                                                    field.handleChange({...current, [newKey]: ''})
+                                                }}
                                             >
-                                                Remove
+                                                add row
                                             </Button>
                                         </Group>
-                                    ))}
-                                </Stack>
-                            )}
+
+
+                                        {
+                                            entries.map(([key, val], index) => (
+                                                <Group key={index} grow>
+
+                                                    <TextInput
+                                                        value={key}
+                                                        placeholder="key"
+                                                        onChange={(e) => {
+                                                            const newKey = e.target.value;
+                                                            const current = {...field.state.value};
+                                                            const valueHolder = current[key];
+                                                            delete current[key]
+                                                            current[newKey] = valueHolder;
+                                                            field.handleChange(current);
+                                                        }}
+                                                    />
+
+                                                    <TextInput
+                                                        value={val}
+                                                        placeholder="value"
+                                                        onChange={(e) => {
+                                                            const newValue = e.target.value;
+                                                            field.handleChange({
+                                                                ...field.state.value,
+                                                                [key]: newValue
+                                                            });
+                                                        }}
+                                                    />
+
+
+                                                    {/*<form.Field*/}
+                                                    {/*    name={`metadata[${index}].key`}*/}
+                                                    {/*    children={(sub) => (*/}
+                                                    {/*        <TextInput*/}
+                                                    {/*            value={sub.state.value}*/}
+                                                    {/*            placeholder="Key"*/}
+                                                    {/*            onChange={(e) => sub.handleChange(e.target.value)}*/}
+                                                    {/*        />*/}
+                                                    {/*    )}*/}
+                                                    {/*/>*/}
+
+                                                    {/*<form.Field*/}
+                                                    {/*    name={`metadata[${index}].value`}*/}
+                                                    {/*    children={(sub) => (*/}
+                                                    {/*        <TextInput*/}
+                                                    {/*            value={sub.state.value}*/}
+                                                    {/*            placeholder="Value"*/}
+                                                    {/*            onChange={(e) => sub.handleChange(e.target.value)}*/}
+                                                    {/*        />*/}
+                                                    {/*    )}*/}
+                                                    {/*/>*/}
+
+                                                    <Button
+                                                        color="red"
+                                                        variant="outline"
+                                                        // onClick={() => field.removeValue(index)}
+                                                        onClick={() => {
+                                                            const current = {...field.state.value};
+                                                            delete current[key];
+                                                            field.handleChange(current);
+                                                        }}
+                                                    >
+                                                        Remove
+                                                    </Button>
+                                                </Group>
+                                            ))
+                                        }
+                                    </Stack>
+                                );
+                            }}
                         />
 
                         <Button type="submit" mt="md">
@@ -305,12 +349,12 @@ function RouteComponent() {
                 </form>
             </Paper>
 
-            <Button component={Link} to="/" variant="subtle" size="xs">
-                return home
-            </Button>
+            {/*<Button component={Link} to="/" variant="subtle" size="xs">*/}
+            {/*    return home*/}
+            {/*</Button>*/}
 
         </Container>
+
+
     )
 }
-
-
