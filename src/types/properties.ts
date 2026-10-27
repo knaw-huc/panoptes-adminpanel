@@ -5,3 +5,10 @@ export interface ResultProperty extends SortableItem {
     path: string,
     type: string
 }
+
+export interface DetailProperty extends SortableItem {
+    name: string,
+    path: string,
+    type: string
+    config: object
+}

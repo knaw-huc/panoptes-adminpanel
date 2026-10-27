@@ -3,12 +3,12 @@ import {fetchAuthenticated} from "../../../../auth.ts";
 import {getTenantUrl} from "../../../../config.ts";
 import {type SortableItem, SortableList} from "../../../../components/sortableList/SortableList.tsx";
 import {useContext, useState} from "react";
-import type {ResultProperty} from "../../../../types/resultProperties.ts";
+import type {ResultProperty} from "../../../../types/properties.ts";
 import {ResultPropertyData} from "../../../../components/result-properties/ResultPropertyData.tsx";
 import {JsonViewer} from "@mantine/code-highlight";
 import {Button, Group} from "@mantine/core";
 import {TenantContext} from "../../../../context/TenantContext.ts";
-import {notifications} from "@mantine/notifications";
+import {saveResponseNotification} from "../../../../notifications.ts";
 
 interface LoaderData {
     resultProperties: ResultProperty[]
@@ -70,10 +70,10 @@ function RouteComponent() {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({facets: newProperties})
+            body: JSON.stringify({resultProperties: newProperties})
         })
 
-        console.log(response)
+        saveResponseNotification(response, "Your changes to the result properties have been saved.")
 
         if (response.status === 200) {
             await router.invalidate({sync: true})
@@ -82,22 +82,9 @@ function RouteComponent() {
             // Needed because invalidate doesn't rerender, it only changes the state values...
             // setCounter(counter + 1)
             setProperties(newProperties)
-            notifications.show({
-                title: "Saved",
-                message: "Your changes to the result properties have been saved.",
-                color: "green",
-                position: "top-right"
-            })
-            setSaveLoading(false)
-        } else {
-            notifications.show({
-                title: "Error",
-                message: "Something went wrong",
-                color: "red",
-                position: "top-right"
-            })
-            setSaveLoading(false)
         }
+
+        setSaveLoading(false)
     }
 
     function onChange(newProperties: SortableItem[]) {

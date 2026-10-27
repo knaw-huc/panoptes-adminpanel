@@ -1,5 +1,5 @@
 import {useFieldContext} from "../context/FormContexts.ts";
-import {Autocomplete, NumberInput, Select, Switch, TextInput} from "@mantine/core";
+import {Autocomplete, JsonInput, NumberInput, Select, Switch, TextInput} from "@mantine/core";
 
 interface fieldArgs {
     label: string,
@@ -58,5 +58,23 @@ export function SwitchField({label, description, first}: fieldArgs) {
 
     return (
         <Switch mt={isFirst ? undefined : "md"} label={label} description={description} checked={field.state.value} onChange={(e) => field.handleChange(e.target.checked)} />
+    )
+}
+
+export function JsonField({label, description, first}: fieldArgs) {
+    const field = useFieldContext<string>()
+    const isFirst = first === true
+
+    return (
+        <JsonInput
+            mt={isFirst ? undefined : "md"}
+            label={label}
+            description={description}
+            value={field.state.value}
+            autosize
+            formatOnBlur={true}
+            validationError={"Invalid JSON"}
+            minRows={6}
+            onChange={(e) => field.handleChange(e)} />
     )
 }

@@ -1,4 +1,4 @@
-import type {ResultProperty} from "../../types/resultProperties.ts";
+import type {ResultProperty} from "../../types/properties.ts";
 import {useAppForm} from "../../hooks/appForm.ts";
 
 interface ResultPropertyParams {
