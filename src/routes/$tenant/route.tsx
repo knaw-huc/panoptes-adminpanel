@@ -56,11 +56,11 @@ function RouteComponent() {
         params: {tenant: tenant.name, dataset: dataset.name}
     }))
 
-    tenantLinks.push({
-        label: "+ Create new",
-        link: "/new_dataset",
-        params: {tenant: tenant.name},
-    })
+    // tenantLinks.push({
+    //     label: "+ Create new",
+    //     link: "/new_dataset",
+    //     params: {tenant: tenant.name},
+    // })
 
     const navigationData = [
         {label: "General", link: "/$tenant", params: {tenant: tenant.name}, icon: IconSettings},
