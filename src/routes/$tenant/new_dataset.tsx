@@ -98,7 +98,6 @@ function RouteComponent() {
     })
 
     return (
-
         <SettingsForm
         form={form}/>
     )

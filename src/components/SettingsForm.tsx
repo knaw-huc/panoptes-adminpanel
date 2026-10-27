@@ -1,15 +1,35 @@
 // import {createFileRoute, Link, useParams} from '@tanstack/react-router'
 // import {useForm} from "@tanstack/react-form";
 // import {JSX, useEffect} from "react";
-import {Button, Container, Group, Paper, Select, Stack, Switch, TextInput} from "@mantine/core";
-import type { ReactFormApi } from "@tanstack/react-form";
+import {Autocomplete, Button, Container, Group, Paper, Select, Stack, Switch, TextInput} from "@mantine/core";
+import type {ReactFormApi} from "@tanstack/react-form";
+import {useQuery} from "@tanstack/react-query";
+import {fetchAuthenticated} from "../auth.ts";
 
 type SettingsFormProps = {
     form: ReactFormApi<any, any>;
 };
 
+const fetchESIndices = async () => {
+    const result = await fetchAuthenticated(`http://admin.local:8000/api/admin/indices`)
+    const data = await result.json();
+    console.log("api response.......", data);
+
+    // return result.json() // add promise?
+    return data.indices;
+
+}
+
 export function SettingsForm(
     {form}: SettingsFormProps) {
+
+    const indicesResult = useQuery({
+        queryKey: ['indices'],
+        queryFn: fetchESIndices,
+    })
+
+    const indices = indicesResult.data;
+
     return (
 
         <Container size={600} my="lg">
@@ -229,18 +249,58 @@ export function SettingsForm(
                         {/*    )}*/}
                         {/*/>*/}
 
+                        {/*<form.Field*/}
+                        {/*    name="es_index"*/}
+                        {/*    children={(field) => (*/}
+                        {/*        <TextInput*/}
+                        {/*            label="es_index"*/}
+                        {/*            required*/}
+                        {/*            value={field.state.value}*/}
+                        {/*            onChange={(e) => field.handleChange(e.target.value)}*/}
+                        {/*        />*/}
+                        {/*    )}*/}
+                        {/*/>*/}
+
+
+                        {/*<form.Field*/}
+                        {/*    name="es_index"*/}
+
+                        {/*    children={(field) => (*/}
+                        {/*        <select*/}
+                        {/*            value={field.state.value}*/}
+                        {/*            onChange={(e) => field.handleChange(e.target.value)}*/}
+                        {/*        >*/}
+                        {/*            <option value=""> select an index</option>*/}
+                        {/*            {indices?.map((indexName, index) => {*/}
+                        {/*                // console.log("logging indexName...........", indexName);*/}
+                        {/*                return (*/}
+                        {/*                    <option key={index} value={indexName}>*/}
+                        {/*                        {index}:{indexName}*/}
+                        {/*                    </option>*/}
+                        {/*                );*/}
+                        {/*            })}*/}
+                        {/*        </select>*/}
+                        {/*    )}*/}
+                        {/*/>*/}
+
+
+                        <h5> select ES index </h5>
                         <form.Field
                             name="es_index"
+
                             children={(field) => (
-                                <TextInput
-                                    label="es_index"
-                                    required
-                                    value={field.state.value}
-                                    onChange={(e) => field.handleChange(e.target.value)}
+                                <Autocomplete
+                                    label="ES index"
+                                    placeholder="select an index"
+                                    value={field.state.value ?? ""}
+                                    onChange={(value) => field.handleChange(value)}
+                                    data={indices?.map((indexName, indexId) => ({
+                                        value: indexName, label: `${indexId}:${indexName}`,
+                                    })) ?? []}
+
                                 />
                             )}
                         />
-
 
                         {/*metadata array*/}
                         <form.Field
@@ -349,9 +409,12 @@ export function SettingsForm(
                 </form>
             </Paper>
 
-            {/*<Button component={Link} to="/" variant="subtle" size="xs">*/}
-            {/*    return home*/}
-            {/*</Button>*/}
+            {/*<Button component={Link} to="/" variant="subtle" size="xs">*/
+            }
+            {/*    return home*/
+            }
+            {/*</Button>*/
+            }
 
         </Container>
 

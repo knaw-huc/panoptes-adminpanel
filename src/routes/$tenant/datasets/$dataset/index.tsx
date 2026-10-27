@@ -24,7 +24,6 @@ export interface DatasetFormValues {
         }
     }
 
-    // metadata: Array<{ key: string; value: string }>
     metadata: Record<string, string>
 }
 
