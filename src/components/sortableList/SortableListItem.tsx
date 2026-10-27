@@ -1,7 +1,7 @@
 import {type JSX, useRef, useState} from "react";
 import {useSortable} from "@dnd-kit/react/sortable";
 import {Accordion, Badge, Button, Group} from "@mantine/core";
-import classes from "../../../routes/$tenant/datasets/$dataset/facets.module.css";
+import classes from "../../routes/$tenant/datasets/$dataset/facets.module.css";
 import type {SortableItem} from "./SortableList.tsx";
 
 interface SortableListItemProperties {
@@ -32,15 +32,15 @@ export function SortableListItem({item, index, onItemChange, formComponent}: Sor
         const badges = []
 
         if (item.deleted) {
-            return [<Badge color={"red"}>Deleted</Badge>]
+            return [<Badge key={"deleted"} color={"red"}>Deleted</Badge>]
         }
 
         if (item.new) {
-            badges.push(<Badge color={"green"}>New</Badge>)
+            badges.push(<Badge key={"new"} color={"green"}>New</Badge>)
         }
 
         if (hasChanges) {
-            badges.push(<Badge color={"yellow"}>Has changes</Badge>)
+            badges.push(<Badge key={"changes"} color={"yellow"}>Has changes</Badge>)
         }
 
         return badges
