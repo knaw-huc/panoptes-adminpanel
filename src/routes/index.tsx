@@ -20,7 +20,7 @@ function RouteComponent() {
         <Stack gap="md">
             <Title order={1}>Home</Title>
             <Title order={2} c="dimmed">
-                Datasets
+                Datasets:
             </Title>
 
             <Stack gap="xs">
@@ -48,8 +48,54 @@ function RouteComponent() {
                         </Group>
 
                     </Card>
+
                 ))}
             </Stack>
+            {/*new tenant*/}
+            <Stack gap="xs">
+
+                <Card
+                    withBorder
+                    padding="md"
+                    radius="md"
+                    component={Link}
+                    to="/create-tenant"
+                >
+                    <Group justify="space-between" align="center">
+                        <div>
+                            <Text fw={600} size="xl">
+                                create new tenant
+                            </Text>
+                        </div>
+
+                        <Button size="md">create new tenant</Button>
+                    </Group>
+
+                </Card>
+            </Stack>
+
+            {/*new user*/}
+            <Stack gap="xs">
+                <Card
+                    withBorder
+                    padding="md"
+                    radius="md"
+                >
+                    <Group justify="space-between" align="center">
+                        <div>
+                            <Text fw={600} size="xl">
+                                create new user
+                            </Text>
+                        </div>
+
+                        <Button size="md">create new user</Button>
+                    </Group>
+
+                </Card>
+
+
+            </Stack>
+
         </Stack>
 
     )
