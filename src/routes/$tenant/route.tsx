@@ -126,6 +126,15 @@ function RouteComponent() {
                     <div className={classes.linksInner}>{links}</div>
                 </ScrollArea>
 
+                <Button
+                    component={Link}
+                    to="/"
+                    variant="subtle"
+                    size="xs"
+                >
+                    return home
+                </Button>
+
             </nav>
             </AppShell.Navbar>
             <AppShell.Main>
