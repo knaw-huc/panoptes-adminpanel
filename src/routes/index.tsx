@@ -14,7 +14,7 @@ export const Route = createFileRoute('/')({
 
 function RouteComponent() {
 
-    const { tenants } = Route.useLoaderData()
+    const {tenants} = Route.useLoaderData()
 
     return (
         <Stack gap="md">
@@ -26,13 +26,13 @@ function RouteComponent() {
             <Stack gap="xs">
                 {tenants.map((tenant) => (
                     <Card
-                    key={tenant._id}
-                    withBorder
-                    padding="md"
-                    radius="md"
-                    component={Link}
-                    to="/$tenant"
-                    params={{ tenant: tenant.name}}
+                        key={tenant._id}
+                        withBorder
+                        padding="md"
+                        radius="md"
+                        component={Link}
+                        to="/$tenant"
+                        params={{tenant: tenant.name}}
                     >
                         <Group justify="space-between" align="center">
                             <div>
@@ -48,7 +48,6 @@ function RouteComponent() {
                         </Group>
 
                     </Card>
-
                 ))}
             </Stack>
             {/*new tenant*/}

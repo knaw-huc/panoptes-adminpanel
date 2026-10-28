@@ -5,7 +5,7 @@ import type {Tenant} from "../../types/tenants.ts";
 import {TenantContext} from "../../context/TenantContext.ts";
 import {fetchAuthenticated, getUsername, logout} from "../../auth.ts";
 import classes from "./route.module.css";
-import {AppShell, Box, Button, Code, Container, Group, Menu, ScrollArea, Text} from "@mantine/core";
+import {Alert, AppShell, Box, Button, Card, Code, Container, Group, Menu, ScrollArea, Stack, Text} from "@mantine/core";
 import type {Dataset} from "../../types/datasets.ts";
 import {IconChartDots3, IconSettings, IconSettingsPlus, IconUsers} from "@tabler/icons-react";
 import {LinksGroup} from "../../components/NavbarLinksGroup.tsx";
@@ -27,10 +27,29 @@ export const Route = createFileRoute('/$tenant')({
             throw new Error('Tenant not found')
         }
 
-        const datasetsResponse = await fetchAuthenticated(`${getTenantUrl(tenantObj)}/api/datasets`)
-        const datasets = await datasetsResponse.json() as Dataset[]
 
-        return {tenant: tenantObj, tenants, datasets}
+        let datasets: Dataset[] = []
+        let domainError = false
+
+        try {
+            const datasetsResponse = await fetchAuthenticated(`${getTenantUrl(tenantObj)}/api/datasets`)
+            if (datasetsResponse.ok) {
+                datasets = await datasetsResponse.json() as Dataset[]
+            } else {
+                domainError = true
+            }
+        }
+        catch (err) {
+            domainError = true
+            datasets = []
+            console.log(err)
+        }
+        return {tenant: tenantObj, tenants, datasets, domainError}
+
+        // const datasetsResponse = await fetchAuthenticated(`${getTenantUrl(tenantObj)}/api/datasets`)
+        // const datasets = await datasetsResponse.json() as Dataset[]
+        //
+        // return {tenant: tenantObj, tenants, datasets}
     },
     loader: async ({ context }) => {
         console.log(context.tenant)
@@ -40,6 +59,7 @@ export const Route = createFileRoute('/$tenant')({
             tenants: context.tenants,
             tenant: context.tenant,
             datasets: context.datasets,
+            domainError: context.domainError,
             username: username
         }
     },
@@ -48,7 +68,7 @@ export const Route = createFileRoute('/$tenant')({
 
 function RouteComponent() {
 
-    const {tenants, tenant, username, datasets} = Route.useLoaderData()
+    const {tenants, tenant, username, datasets, domainError } = Route.useLoaderData()
 
     const tenantLinks = datasets.map(dataset => ({
         label: dataset.name,
@@ -112,7 +132,19 @@ function RouteComponent() {
                 <TenantContext value={tenant}>
                     <Container strategy={"grid"} size={1000}>
                         <Box>
+                            {domainError ? (
+                                <Card withBorder padding="xl" radius="md" mt="xl">
+                                    <Stack>
+                                        <Alert variant="light" color="amber" title="Domain not ready">
+                                            No datasets, domain not configured yet for <strong>{tenant.name}</strong>.
+                                            the tenant domain is : ({tenant.domain}).
+
+                                        </Alert>
+                                    </Stack>
+                                </Card>
+                            ) : (
                             <Outlet />
+                                )}
                         </Box>
                     </Container>
                 </TenantContext>

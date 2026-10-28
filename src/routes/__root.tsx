@@ -10,6 +10,12 @@ interface RouterContext {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
+
+    // errorComponent: () => (
+    //     <div style={{ padding: 40, textAlign: "center" }}>
+    //         <h2>Network connection error. Check whether the domain is configured. </h2>
+    //     </div>
+    // )
 })
 
 function RootComponent() {
