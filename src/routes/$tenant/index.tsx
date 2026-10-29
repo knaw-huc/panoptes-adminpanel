@@ -8,9 +8,6 @@ export const Route = createFileRoute('/$tenant/')({
     component: RouteComponent,
 })
 
-export function hi(){
-    return 'hi'
-}
 
 function RouteComponent() {
     const tenant = useContext(TenantContext)

@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TenantRouteRouteImport } from './routes/$tenant/route'
 import { Route as CreateTenantRouteImport } from './routes/create-tenant'
+import { Route as CreateUserRouteImport } from './routes/create-user'
+import { Route as ExistingUsersRouteImport } from './routes/existing-users'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as TenantIndexRouteImport } from './routes/$tenant/index'
 import { Route as TenantEditTenantRouteImport } from './routes/$tenant/edit-tenant'
@@ -37,6 +39,16 @@ const TenantRouteRoute = TenantRouteRouteImport.update({
 const CreateTenantRoute = CreateTenantRouteImport.update({
   id: '/create-tenant',
   path: '/create-tenant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateUserRoute = CreateUserRouteImport.update({
+  id: '/create-user',
+  path: '/create-user',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExistingUsersRoute = ExistingUsersRouteImport.update({
+  id: '/existing-users',
+  path: '/existing-users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -104,6 +116,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$tenant': typeof TenantRouteRouteWithChildren
   '/create-tenant': typeof CreateTenantRoute
+  '/create-user': typeof CreateUserRoute
+  '/existing-users': typeof ExistingUsersRoute
   '/login': typeof LoginRoute
   '/$tenant/edit-tenant': typeof TenantEditTenantRoute
   '/$tenant/new_dataset': typeof TenantNew_datasetRoute
@@ -119,6 +133,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create-tenant': typeof CreateTenantRoute
+  '/create-user': typeof CreateUserRoute
+  '/existing-users': typeof ExistingUsersRoute
   '/login': typeof LoginRoute
   '/$tenant/edit-tenant': typeof TenantEditTenantRoute
   '/$tenant/new_dataset': typeof TenantNew_datasetRoute
@@ -135,6 +151,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$tenant': typeof TenantRouteRouteWithChildren
   '/create-tenant': typeof CreateTenantRoute
+  '/create-user': typeof CreateUserRoute
+  '/existing-users': typeof ExistingUsersRoute
   '/login': typeof LoginRoute
   '/$tenant/edit-tenant': typeof TenantEditTenantRoute
   '/$tenant/new_dataset': typeof TenantNew_datasetRoute
@@ -153,6 +171,8 @@ export interface FileRouteTypes {
     | '/'
     | '/$tenant'
     | '/create-tenant'
+    | '/create-user'
+    | '/existing-users'
     | '/login'
     | '/$tenant/edit-tenant'
     | '/$tenant/new_dataset'
@@ -168,6 +188,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/create-tenant'
+    | '/create-user'
+    | '/existing-users'
     | '/login'
     | '/$tenant/edit-tenant'
     | '/$tenant/new_dataset'
@@ -183,6 +205,8 @@ export interface FileRouteTypes {
     | '/'
     | '/$tenant'
     | '/create-tenant'
+    | '/create-user'
+    | '/existing-users'
     | '/login'
     | '/$tenant/edit-tenant'
     | '/$tenant/new_dataset'
@@ -200,6 +224,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TenantRouteRoute: typeof TenantRouteRouteWithChildren
   CreateTenantRoute: typeof CreateTenantRoute
+  CreateUserRoute: typeof CreateUserRoute
+  ExistingUsersRoute: typeof ExistingUsersRoute
   LoginRoute: typeof LoginRoute
 }
 
@@ -224,6 +250,20 @@ declare module '@tanstack/react-router' {
       path: '/create-tenant'
       fullPath: '/create-tenant'
       preLoaderRoute: typeof CreateTenantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-user': {
+      id: '/create-user'
+      path: '/create-user'
+      fullPath: '/create-user'
+      preLoaderRoute: typeof CreateUserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/existing-users': {
+      id: '/existing-users'
+      path: '/existing-users'
+      fullPath: '/existing-users'
+      preLoaderRoute: typeof ExistingUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -354,6 +394,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TenantRouteRoute: TenantRouteRouteWithChildren,
   CreateTenantRoute: CreateTenantRoute,
+  CreateUserRoute: CreateUserRoute,
+  ExistingUsersRoute: ExistingUsersRoute,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport

@@ -79,6 +79,8 @@ function RouteComponent() {
                     withBorder
                     padding="md"
                     radius="md"
+                    component={Link}
+                    to="/create-user"
                 >
                     <Group justify="space-between" align="center">
                         <div>
@@ -89,10 +91,29 @@ function RouteComponent() {
 
                         <Button size="md">create new user</Button>
                     </Group>
-
                 </Card>
+            </Stack>
 
 
+            {/*existing users*/}
+            <Stack gap="xs">
+                <Card
+                    withBorder
+                    padding="md"
+                    radius="md"
+                    component={Link}
+                    to="/existing-users"
+                >
+                    <Group justify="space-between" align="center">
+                        <div>
+                            <Text fw={600} size="xl">
+                                view existing users
+                            </Text>
+                        </div>
+
+                        <Button size="md">view existing users</Button>
+                    </Group>
+                </Card>
             </Stack>
 
         </Stack>

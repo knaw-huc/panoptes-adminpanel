@@ -11,11 +11,11 @@ import {IconChartDots3, IconSettings, IconSettingsPlus, IconUsers} from "@tabler
 import {LinksGroup} from "../../components/NavbarLinksGroup.tsx";
 
 export const Route = createFileRoute('/$tenant')({
-    beforeLoad: async ({params: {tenant}}) => {
+    beforeLoad: async ({context: {queryClient} ,params: {tenant}}) => {
         const res = await fetchAuthenticated(`${getBaseUrl()}/api/admin/tenants`)
         const tenants = (await res.json()).tenants as Tenant[]
 
-        let tenantObj: Tenant | undefined
+        let tenantObj: Tenant | undefined = tenants.find(t => t.name === tenant)
         for (const t of tenants) {
             if (t.name === tenant) {
                 tenantObj = t
@@ -32,12 +32,26 @@ export const Route = createFileRoute('/$tenant')({
         let domainError = false
 
         try {
-            const datasetsResponse = await fetchAuthenticated(`${getTenantUrl(tenantObj)}/api/datasets`)
-            if (datasetsResponse.ok) {
-                datasets = await datasetsResponse.json() as Dataset[]
-            } else {
-                domainError = true
-            }
+            datasets = await queryClient.ensureQueryData({
+                queryKey: ['datasets', tenantObj.name],
+                queryFn: async () => {
+                    const datasetsResponse = await fetchAuthenticated(`${getTenantUrl(tenantObj)}/api/datasets`)
+                    if (!datasetsResponse.ok) {
+                        throw new Error('failed to fetch datasets')
+                    }
+                    // return datasetsResponse.json() as Promise<Dataset[]>
+                    return datasetsResponse.json()
+
+                },
+                retry: false,
+                staleTime: 1000 * 60 * 5
+            })
+            // const datasetsResponse = await fetchAuthenticated(`${getTenantUrl(tenantObj)}/api/datasets`)
+            // if (datasetsResponse.ok) {
+            //     datasets = await datasetsResponse.json() as Dataset[]
+            // } else {
+            //     domainError = true
+            // }
         }
         catch (err) {
             domainError = true
