@@ -117,7 +117,9 @@ function RouteComponent() {
                         <Menu.Label>Select tenant</Menu.Label>
                         {tenants.map(t => <Link key={t.name} to={"/$tenant"} params={{tenant: t.name}} className={classes.linkUnstyled}><Menu.Item>{t.name}</Menu.Item></Link>)}
                         <Menu.Divider />
+                        <Link to={"/$tenant/edit-tenant"} type={"button"} className={classes.linkUnstyled}><Menu.Item leftSection={<IconSettings />} color={"blue"}>Edit current tenant</Menu.Item></Link>
                         <Link to={"/create-tenant"} type={"button"} className={classes.linkUnstyled}><Menu.Item leftSection={<IconSettingsPlus />} color={"blue"}>Create tenant</Menu.Item></Link>
+
                     </Menu.Dropdown>
                 </Menu>
 
