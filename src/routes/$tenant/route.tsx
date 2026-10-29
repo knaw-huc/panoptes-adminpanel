@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Outlet, Link, createFileRoute} from '@tanstack/react-router'
+import {Outlet, Link, createFileRoute, useLocation} from '@tanstack/react-router'
 import {getBaseUrl, getTenantUrl} from "../../config.ts";
 import type {Tenant} from "../../types/tenants.ts";
 import {TenantContext} from "../../context/TenantContext.ts";
@@ -69,6 +69,9 @@ export const Route = createFileRoute('/$tenant')({
 function RouteComponent() {
 
     const {tenants, tenant, username, datasets, domainError } = Route.useLoaderData()
+
+    const location = useLocation()
+    const isEditPage = location.pathname.includes('edit-tenant')
 
     const tenantLinks = datasets.map(dataset => ({
         label: dataset.name,
@@ -143,7 +146,8 @@ function RouteComponent() {
                 <TenantContext value={tenant}>
                     <Container strategy={"grid"} size={1000}>
                         <Box>
-                            {domainError ? (
+                            {/*{domainError && !isEditPage ? (*/}
+                            {domainError && (
                                 <Card withBorder padding="xl" radius="md" mt="xl">
                                     <Stack>
                                         <Alert variant="light" color="amber" title="Domain not ready">
@@ -153,9 +157,10 @@ function RouteComponent() {
                                         </Alert>
                                     </Stack>
                                 </Card>
-                            ) : (
-                            <Outlet />
+                            // ) : (
+                            // <Outlet />
                                 )}
+                            <Outlet />
                         </Box>
                     </Container>
                 </TenantContext>

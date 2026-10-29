@@ -23,7 +23,7 @@ function RouteComponent() {
     console.log('logging tenant........', tenant)
 
     const form = useForm<TenantValues>({
-        tenantValues: {
+        defaultValues: {
             name: '',
             domain: '',
         },
@@ -38,7 +38,7 @@ function RouteComponent() {
             try {
                 console.log('loggimg the valiue...', value)
 
-                const response = await fetchAuthenticated(`http://admin.local:8000/api/admin/tenants`, {
+                const response = await fetchAuthenticated(`http://admin.local:8000/api/admin/tenants?name=${tenant}`, {
                     method:'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ function RouteComponent() {
                           name="domain"
                           validators={{
                               onChange: ({value}) =>
-                                  !/^[a-z_-]*$/.test(value)
+                                  !/^[a-z.]*$/.test(value)
                               // ? 'only lowercase and dots allowed'
                               // : undefined
                           }}
