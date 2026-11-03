@@ -1,9 +1,11 @@
 import {createFileRoute, useParams} from '@tanstack/react-router'
 // import {DatasetFormValues} from "../../new_dataset.tsx";
 import {useForm} from "@tanstack/react-form";
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import { SettingsForm} from "../../../../components/SettingsForm.tsx";
 import type {DatasetFormValues} from "../../../../types/datasets.ts";
+import {getTenantUrl} from "../../../../config.ts";
+import {TenantContext} from "../../../../context/TenantContext.ts";
 
 export const Route = createFileRoute('/$tenant/datasets/$dataset/')({
     component: RouteComponent,
@@ -12,6 +14,7 @@ export const Route = createFileRoute('/$tenant/datasets/$dataset/')({
 function RouteComponent() {
     const params = useParams({from: '/$tenant/datasets/$dataset'})
     const dataset = params.dataset
+    const tenant = useContext(TenantContext)
 
     console.log('logging ... dataset:', dataset)
 
@@ -56,7 +59,7 @@ function RouteComponent() {
             try {
                 console.log('logging the value...', value)
 
-                const response = await fetch(`http://bypass.local:8000/api/datasets/${encodeURIComponent(dataset)}`, {
+                const response = await fetch(`${getTenantUrl(tenant)}/api/datasets/${encodeURIComponent(dataset)}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -85,7 +88,7 @@ function RouteComponent() {
         async function getDataset() {
 
             try {
-                const response = await fetch(`http://bypass.local:8000/api/datasets/${encodeURIComponent(dataset)}`)
+                const response = await fetch(`${getTenantUrl(tenant)}/api/datasets/${encodeURIComponent(dataset)}`)
                 if (!response.ok) throw new Error('dataset not found')
 
                 const data: DatasetFormValues = await response.json()
@@ -106,7 +109,7 @@ function RouteComponent() {
             }
         }
         getDataset()
-    }, [dataset, form])
+    }, [dataset, form, tenant])
 
     return (
         <SettingsForm

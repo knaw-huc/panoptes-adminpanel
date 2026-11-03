@@ -2,6 +2,7 @@ import {createFileRoute, Link} from '@tanstack/react-router'
 import {useForm} from "@tanstack/react-form";
 import {Button, Card, Container, Paper, Stack, TextInput, Title} from "@mantine/core";
 import {fetchAuthenticated} from "../auth.ts";
+import {getBaseUrl} from "../config.ts";
 
 export interface TenantValues {
     name: string
@@ -30,7 +31,7 @@ function RouteComponent() {
                 try {
                     console.log('logging the payload....', payload)
 
-                    const response = await fetchAuthenticated(`http://admin.local:8000/api/admin/tenants`, {
+                    const response = await fetchAuthenticated(`${getBaseUrl()}/api/admin/tenants`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

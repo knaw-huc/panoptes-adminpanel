@@ -2,11 +2,16 @@ import {createFileRoute} from '@tanstack/react-router'
 import {useForm} from '@tanstack/react-form'
 import {SettingsForm} from "../../components/SettingsForm.tsx";
 import type {DatasetFormValues} from "../../types/datasets.ts";
+import {getTenantUrl} from "../../config.ts";
+import {useContext} from "react";
+import {TenantContext} from "../../context/TenantContext.ts";
 export const Route = createFileRoute('/$tenant/new_dataset')({
     component: RouteComponent,
 })
 
 function RouteComponent() {
+
+    const tenant = useContext(TenantContext)
 
     const form = useForm<DatasetFormValues, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined>({
         defaultValues: {
@@ -47,7 +52,7 @@ function RouteComponent() {
             try {
                 console.log('logging the value', value)
 
-                const response = await fetch('http://bypass.local:8000/api/datasets',{
+                const response = await fetch(`${getTenantUrl(tenant)}/api/datasets`,{
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

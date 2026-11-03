@@ -3,6 +3,7 @@ import {useForm} from "@tanstack/react-form";
 import {fetchAuthenticated} from "../../auth.ts";
 import {useEffect} from "react";
 import {Button, Card, Container, Paper, Stack, TextInput, Title} from "@mantine/core";
+import {getBaseUrl} from "../../config.ts";
 
 export const Route = createFileRoute('/$tenant/edit-tenant')({
   component: RouteComponent,
@@ -38,7 +39,7 @@ function RouteComponent() {
             try {
                 console.log('loggimg the valiue...', value)
 
-                const response = await fetchAuthenticated(`http://admin.local:8000/api/admin/tenants?name=${tenant}`, {
+                const response = await fetchAuthenticated(`${getBaseUrl()}/api/admin/tenants?name=${tenant}`, {
                     method:'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ function RouteComponent() {
         async function getTenant() {
 
             try {
-                const response = await fetchAuthenticated(`http://admin.local:8000/api/admin/tenants`)
+                const response = await fetchAuthenticated(`${getBaseUrl()}/api/admin/tenants`)
                 if (!response.ok) throw new Error('tenants not found')
 
                 // const data: TenantValues = await response.json()
