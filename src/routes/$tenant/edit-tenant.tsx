@@ -22,11 +22,11 @@ function RouteComponent() {
 
     console.log('logging tenant........', tenant)
 
-    const form = useForm<TenantValues>({
+    const form = useForm({
         defaultValues: {
             name: '',
             domain: '',
-        },
+        } satisfies TenantValues,
         onSubmit: async ({value}) => {
             console.log('sending payload to backend..', JSON.stringify(value, null, 2))
 
@@ -69,7 +69,7 @@ function RouteComponent() {
 
                 // const data: TenantValues = await response.json()
 
-                const json = await response.json()
+                const json: {tenants: TenantValues[]} = await response.json()
                 console.log('API response', json)
 
                 const tenantsList = json.tenants

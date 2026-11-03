@@ -10,6 +10,7 @@ import {MantineProvider} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
 import {CodeHighlightAdapterProvider, createShikiAdapter} from "@mantine/code-highlight";
 
+
 const queryClient = new QueryClient()
 
 // Set up a Router instance

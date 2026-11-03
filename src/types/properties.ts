@@ -10,5 +10,5 @@ export interface DetailProperty extends SortableItem {
     name: string,
     path: string,
     type: string
-    config: object
+    config: object | string
 }

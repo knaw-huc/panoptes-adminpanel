@@ -13,7 +13,7 @@ interface SortableListItemProperties {
 
 export function SortableListItem({item, index, onItemChange, formComponent}: SortableListItemProperties) {
     const [element, setElement] = useState<Element | null>(null)
-    const handleRef = useRef<HTMLButtonElement | null>(null)
+    const handleRef = useRef<HTMLDivElement | null>(null)
     const {isDragging} = useSortable({id: item._id, index, element, handle: handleRef})
     const [hasChanges, setHasChanges] = useState<boolean>(false)
     const FormComponent = formComponent

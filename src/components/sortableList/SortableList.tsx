@@ -31,7 +31,7 @@ export function SortableList({addLabel, formComponent, items, onChange}: Sortabl
         const item = {...newItem as SortableItem, new: true, _id: uuidv4()}
         onChange([...items, item])
         close()
-        setNewItem(null)
+        setNewItem(undefined)
     }
 
     function onItemChange(item: SortableItem, index: number) {

@@ -14,11 +14,11 @@ export const Route = createFileRoute('/create-tenant')({
 })
 
 function RouteComponent() {
-    const form = useForm<TenantValues>({
-            tenantValues: {
+    const form = useForm({
+            defaultValues: {
                 name: '',
                 domain: '',
-            },
+            } satisfies TenantValues,
             onSubmit: async ({value}) => {
                 console.log('sending to backend....', JSON.stringify(value, null, 2))
 

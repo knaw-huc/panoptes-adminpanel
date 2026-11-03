@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {TenantContext} from "../../context/TenantContext.ts";
-import {Alert, Card, Stack} from "@mantine/core";
 
 export const Route = createFileRoute('/$tenant/')({
 

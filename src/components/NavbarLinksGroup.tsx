@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
-import { Box, Collapse, Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
+import { Box, Collapse, Group, ThemeIcon, UnstyledButton } from '@mantine/core';
 import classes from './NavbarLinksGroup.module.css';
 import * as React from "react";
 import {Link, useMatchRoute} from "@tanstack/react-router";

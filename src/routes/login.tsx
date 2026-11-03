@@ -1,7 +1,7 @@
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {useState} from "react";
 import {getBaseUrl} from "../config.ts";
-import {Button, Container, Paper, PasswordInput, Text, TextInput, Title} from "@mantine/core";
+import {Button, Checkbox, Container, Paper, PasswordInput, Text, TextInput, Title} from "@mantine/core";
 
 import classes from './login.module.css'
 
@@ -11,9 +11,9 @@ export const Route = createFileRoute('/login')({
 
 function RouteComponent() {
 
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState(() => localStorage.getItem("remembered_user") ?? '')
     const [password, setPassword] = useState('')
-    const [remember, setRemember] = useState(false)
+    const [remember, setRemember] = useState(() => localStorage.getItem("remembered_user") !== null)
     const [error, setError] = useState('')
     const message = localStorage.getItem("login_message")
     const navigate = useNavigate();
@@ -72,6 +72,7 @@ function RouteComponent() {
             <form onSubmit={handleSubmit}>
                 <TextInput value={username} onChange={e => setUsername(e.target.value)} label={"Username"} placeholder={"jan_janssen"} required radius={"md"} />
                 <PasswordInput value={password} onChange={e => setPassword(e.target.value)} label={"Password"} placeholder={"Your Password"} required mt={"md"} radius={"md"} />
+                <Checkbox mt="md" label="Remember username" checked={remember} onChange={e => setRemember(e.currentTarget.checked)} />
 
                 <Text>{error}</Text>
                 <Button type={"submit"} fullWidth mt={"xl"} radius={"md"}>Sign in</Button>

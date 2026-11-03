@@ -5,4 +5,4 @@ export interface FacetMetadata {
     fieldNames: string[]
 }
 
-export const FacetMetadataContext = createContext<FacetMetadata>(null);
+export const FacetMetadataContext = createContext<FacetMetadata>({types: [], fieldNames: []});

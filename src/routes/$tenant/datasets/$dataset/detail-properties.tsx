@@ -1,5 +1,5 @@
 import {createFileRoute, useRouter} from '@tanstack/react-router'
-import type {DetailProperty, ResultProperty} from "../../../../types/properties.ts";
+import type {DetailProperty} from "../../../../types/properties.ts";
 import {fetchAuthenticated} from "../../../../auth.ts";
 import {getTenantUrl} from "../../../../config.ts";
 import {type SortableItem, SortableList} from "../../../../components/sortableList/SortableList.tsx";
@@ -49,7 +49,8 @@ function RouteComponent() {
         const newProperties = properties
             .filter((f: DetailProperty) => f.deleted !== true)
             .map((f: DetailProperty, i: number) => {
-                return {...f, config: JSON.parse(f.config), order: i, dataset_name: dataset, new: undefined}
+                const config = typeof f.config === "string" ? JSON.parse(f.config) : f.config
+                return {...f, config, order: i, dataset_name: dataset, new: undefined}
             })
 
         const response = await fetchAuthenticated(`${getTenantUrl(tenant)}/api/datasets/${dataset}/detail-properties`, {

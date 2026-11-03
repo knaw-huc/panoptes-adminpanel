@@ -30,7 +30,7 @@ export function NumberField({label, description, first, min, max}: numberFieldAr
     const isFirst = first === true
 
     return (
-        <NumberInput mt={isFirst ? undefined : "md"} min={min} max={max} description={description} label={label} value={field.state.value} onChange={(value) => field.handleChange(value)} />
+        <NumberInput mt={isFirst ? undefined : "md"} min={min} max={max} description={description} label={label} value={field.state.value} onChange={(value) => field.handleChange(typeof value === "number" ? value : value === "" ? 0 : Number(value))} />
     )
 }
 

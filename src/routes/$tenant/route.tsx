@@ -1,9 +1,8 @@
-import * as React from 'react'
-import {Outlet, Link, createFileRoute, useLocation} from '@tanstack/react-router'
+import {Outlet, Link, createFileRoute} from '@tanstack/react-router'
 import {getBaseUrl, getTenantUrl} from "../../config.ts";
 import type {Tenant} from "../../types/tenants.ts";
 import {TenantContext} from "../../context/TenantContext.ts";
-import {fetchAuthenticated, getUsername, logout} from "../../auth.ts";
+import {fetchAuthenticated} from "../../auth.ts";
 import classes from "./route.module.css";
 import {Alert, AppShell, Box, Button, Card, Code, Container, Group, Menu, ScrollArea, Stack, Text} from "@mantine/core";
 import type {Dataset} from "../../types/datasets.ts";
@@ -51,27 +50,18 @@ export const Route = createFileRoute('/$tenant')({
         //
         // return {tenant: tenantObj, tenants, datasets}
     },
-    loader: async ({ context }) => {
-        console.log(context.tenant)
-        const username = await getUsername()
-
-        return {
-            tenants: context.tenants,
-            tenant: context.tenant,
-            datasets: context.datasets,
-            domainError: context.domainError,
-            username: username
-        }
-    },
+    loader: async ({context}) => ({
+        tenants: context.tenants,
+        tenant: context.tenant,
+        datasets: context.datasets,
+        domainError: context.domainError,
+    }),
     component: RouteComponent,
 })
 
 function RouteComponent() {
 
-    const {tenants, tenant, username, datasets, domainError } = Route.useLoaderData()
-
-    const location = useLocation()
-    const isEditPage = location.pathname.includes('edit-tenant')
+    const {tenants, tenant, datasets, domainError } = Route.useLoaderData()
 
     const tenantLinks = datasets.map(dataset => ({
         label: dataset.name,
@@ -120,7 +110,7 @@ function RouteComponent() {
                         <Menu.Label>Select tenant</Menu.Label>
                         {tenants.map(t => <Link key={t.name} to={"/$tenant"} params={{tenant: t.name}} className={classes.linkUnstyled}><Menu.Item>{t.name}</Menu.Item></Link>)}
                         <Menu.Divider />
-                        <Link to={"/$tenant/edit-tenant"} type={"button"} className={classes.linkUnstyled}><Menu.Item leftSection={<IconSettings />} color={"blue"}>Edit current tenant</Menu.Item></Link>
+                        <Link to={"/$tenant/edit-tenant"} params={{tenant: tenant.name}} type={"button"} className={classes.linkUnstyled}><Menu.Item leftSection={<IconSettings />} color={"blue"}>Edit current tenant</Menu.Item></Link>
                         <Link to={"/create-tenant"} type={"button"} className={classes.linkUnstyled}><Menu.Item leftSection={<IconSettingsPlus />} color={"blue"}>Create tenant</Menu.Item></Link>
 
                     </Menu.Dropdown>

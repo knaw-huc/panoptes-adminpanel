@@ -1,39 +1,14 @@
-import {createFileRoute, Link} from '@tanstack/react-router'
-// import * as React from 'react'
+import {createFileRoute} from '@tanstack/react-router'
 import {useForm} from '@tanstack/react-form'
-import {Button, Container, Group, Paper, Select, Stack, Switch, TextInput} from "@mantine/core";
 import {SettingsForm} from "../../components/SettingsForm.tsx";
-
-
-export interface DatasetFormValues {
-    name: string
-    tenant_name: string
-    data_type: string
-    detail_id: string
-    es_index: string
-    s3: boolean
-    authentication_option: boolean
-    data_configuration: {
-        id_property: string
-        base_url: string
-        s3_endpoint: string
-        s3_key_id: string
-        s3_secret: string
-        auth: {
-            username: string
-            password: string
-        }
-    }
-
-    metadata: Record<string, string>
-}
+import type {DatasetFormValues} from "../../types/datasets.ts";
 export const Route = createFileRoute('/$tenant/new_dataset')({
     component: RouteComponent,
 })
 
 function RouteComponent() {
 
-    const form = useForm<DatasetFormValues>({
+    const form = useForm<DatasetFormValues, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined>({
         defaultValues: {
             name: '',
             tenant_name: '',
@@ -54,7 +29,7 @@ function RouteComponent() {
                 },
             },
             metadata: {}
-        },
+        } satisfies DatasetFormValues,
         onSubmit: async ({value}) => {
 
             console.log('sending payload to backend..', JSON.stringify(value, null, 2))
@@ -102,5 +77,3 @@ function RouteComponent() {
         form={form}/>
     )
 }
-
-

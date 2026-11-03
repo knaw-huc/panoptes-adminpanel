@@ -25,15 +25,8 @@ function RouteComponent() {
 
             <Stack gap="xs">
                 {tenants.map((tenant) => (
-                    <Card
-                        key={tenant._id}
-                        withBorder
-                        padding="md"
-                        radius="md"
-                        component={Link}
-                        to="/$tenant"
-                        params={{tenant: tenant.name}}
-                    >
+                    <Link key={tenant._id} to="/$tenant" params={{tenant: tenant.name}}>
+                    <Card withBorder padding="md" radius="md">
                         <Group justify="space-between" align="center">
                             <div>
                                 <Text fw={600} size="xl">
@@ -48,6 +41,7 @@ function RouteComponent() {
                         </Group>
 
                     </Card>
+                    </Link>
                 ))}
             </Stack>
             {/*new tenant*/}
@@ -99,6 +93,5 @@ function RouteComponent() {
 
     )
 }
-
 
 

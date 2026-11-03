@@ -1,31 +1,9 @@
-import {createFileRoute, Link, useParams} from '@tanstack/react-router'
+import {createFileRoute, useParams} from '@tanstack/react-router'
 // import {DatasetFormValues} from "../../new_dataset.tsx";
 import {useForm} from "@tanstack/react-form";
 import {useEffect} from "react";
 import { SettingsForm} from "../../../../components/SettingsForm.tsx";
-
-export interface DatasetFormValues {
-    name: string
-    tenant_name: string
-    data_type: string
-    detail_id: string
-    es_index: string
-    s3: boolean
-    authentication_option: boolean
-    data_configuration: {
-        id_property: string
-        base_url: string
-        s3_endpoint: string
-        s3_key_id: string
-        s3_secret: string
-        auth: {
-            username: string
-            password: string
-        }
-    }
-
-    metadata: Record<string, string>
-}
+import type {DatasetFormValues} from "../../../../types/datasets.ts";
 
 export const Route = createFileRoute('/$tenant/datasets/$dataset/')({
     component: RouteComponent,
@@ -37,7 +15,7 @@ function RouteComponent() {
 
     console.log('logging ... dataset:', dataset)
 
-    const form = useForm<DatasetFormValues>({
+    const form = useForm<DatasetFormValues, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined>({
         defaultValues: {
             name: '',
             tenant_name: '',
@@ -60,7 +38,7 @@ function RouteComponent() {
             metadata: {}
 
             // metadata: [{key: '', value: ''}],
-        },
+        } satisfies DatasetFormValues,
         onSubmit: async ({value}) => {
 
             console.log('sending payload to backend..', JSON.stringify(value, null, 2))

@@ -2,21 +2,23 @@
 // import {useForm} from "@tanstack/react-form";
 // import {JSX, useEffect} from "react";
 import {Autocomplete, Button, Container, Group, Paper, Select, Stack, Switch, TextInput} from "@mantine/core";
-import type {ReactFormApi} from "@tanstack/react-form";
+import type {ReactFormExtendedApi} from "@tanstack/react-form";
 import {useQuery} from "@tanstack/react-query";
 import {fetchAuthenticated} from "../auth.ts";
+import type {DatasetFormValues} from "../types/datasets.ts";
+import {getBaseUrl} from "../config.ts";
 
 type SettingsFormProps = {
-    form: ReactFormApi<any, any>;
+    form: ReactFormExtendedApi<DatasetFormValues, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined>;
 };
 
-const fetchESIndices = async () => {
-    const result = await fetchAuthenticated(`http://admin.local:8000/api/admin/indices`)
+const fetchESIndices = async (): Promise<string[]> => {
+    const result = await fetchAuthenticated(`${getBaseUrl()}/api/admin/indices`)
     const data = await result.json();
     console.log("api response.......", data);
 
     // return result.json() // add promise?
-    return data.indices;
+    return data.indices as string[];
 
 }
 
