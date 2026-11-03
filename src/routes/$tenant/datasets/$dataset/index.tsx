@@ -6,6 +6,7 @@ import { SettingsForm} from "../../../../components/SettingsForm.tsx";
 import type {DatasetFormValues} from "../../../../types/datasets.ts";
 import {getTenantUrl} from "../../../../config.ts";
 import {TenantContext} from "../../../../context/TenantContext.ts";
+import {useQuery} from "@tanstack/react-query";
 
 export const Route = createFileRoute('/$tenant/datasets/$dataset/')({
     component: RouteComponent,
@@ -81,38 +82,63 @@ function RouteComponent() {
         }
     })
 
-    useEffect(() => {
-
-        if (!dataset) return console.log('no dataset')
-
-        async function getDataset() {
-
-            try {
-                const response = await fetch(`${getTenantUrl(tenant)}/api/datasets/${encodeURIComponent(dataset)}`)
-                if (!response.ok) throw new Error('dataset not found')
-
-                const data: DatasetFormValues = await response.json()
-
-                form.setFieldValue('name', data.name)
-                form.setFieldValue('tenant_name', data.tenant_name)
-                form.setFieldValue('data_type', data.data_type)
-                form.setFieldValue('detail_id', data.detail_id)
-                form.setFieldValue('data_configuration', data.data_configuration)
-                form.setFieldValue('es_index', data.es_index)
-
-
-                form.setFieldValue('metadata', data.metadata)
-
-
-            } catch (error) {
-                console.error('Error loading dataset:', error)
-            }
+    const {data} = useQuery({
+        queryKey: ['dataset', dataset],
+        queryFn: async () => {
+            if (!dataset) return null
+            const response = await fetch(`${getTenantUrl(tenant)}/api/datasets/${encodeURIComponent(dataset)}`)
+            if (!response.ok) throw new Error('dataset not found')
+            return response.json()
         }
-        getDataset()
-    }, [dataset, form, tenant])
+    })
+
+
+    useEffect(() => {
+        if (data) {
+
+            form.setFieldValue('name', data.name)
+            form.setFieldValue('tenant_name', data.tenant_name)
+            form.setFieldValue('data_type', data.data_type)
+            form.setFieldValue('detail_id', data.detail_id)
+            form.setFieldValue('data_configuration', data.data_configuration)
+            form.setFieldValue('es_index', data.es_index)
+
+
+            form.setFieldValue('metadata', data.metadata)
+
+
+        }
+
+        // if (!dataset) return console.log('no dataset')
+        //
+        // async function getDataset() {
+        //
+        //     try {
+        //         const response = await fetch(`http://bypass.local:8000/api/datasets/${encodeURIComponent(dataset)}`)
+        //         if (!response.ok) throw new Error('dataset not found')
+        //
+        //         const data: DatasetFormValues = await response.json()
+        //
+        //         form.setFieldValue('name', data.name)
+        //         form.setFieldValue('tenant_name', data.tenant_name)
+        //         form.setFieldValue('data_type', data.data_type)
+        //         form.setFieldValue('detail_id', data.detail_id)
+        //         form.setFieldValue('data_configuration', data.data_configuration)
+        //         form.setFieldValue('es_index', data.es_index)
+        //
+        //
+        //         form.setFieldValue('metadata', data.metadata)
+        //
+        //
+        //     } catch (error) {
+        //         console.error('Error loading dataset:', error)
+        //     }
+        // }
+        // getDataset()
+    }, [dataset, form, tenant, data])
 
     return (
         <SettingsForm
-        form={form}/>
+            form={form}/>
     )
 }
