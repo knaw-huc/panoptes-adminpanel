@@ -6,7 +6,7 @@ import {fetchAuthenticated} from "../auth.ts";
 import {getBaseUrl} from "../config.ts";
 import {applyGenericError, applyServerErrors, errorToMessage, HttpError} from "../error/errorHandling.ts";
 
-// Regular expressions for
+// Regular expressions for domain name and tenant name
 const DOMAIN_RE = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/i;
 const NAME_RE = /^[a-z_-]*$/;
 
@@ -15,6 +15,7 @@ export interface TenantValues {
     domain: string
 }
 
+// Mutation function for creating a tenant - https://tanstack.com/query/latest/docs/framework/react/guides/mutations
 async function createTenant(payload: TenantValues) {
     const response = await fetchAuthenticated(`${getBaseUrl()}/api/admin/tenants`, {
         method: 'POST',
@@ -36,7 +37,7 @@ const CreateTenantComponent = () => {
     const mutation = useMutation({ mutationFn: createTenant });
     const form = useForm({
             defaultValues: {
-                name: 'tenant-test',
+                name: '',
                 domain: '',
             } satisfies TenantValues,
 
